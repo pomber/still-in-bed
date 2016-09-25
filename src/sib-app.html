@@ -1,11 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="sib-sun.html">
 <link rel="import" href="sib-cloud.html">
 
 <dom-module id="sib-app">
   <template>
-    <style>
+    <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
         background-color: var(--paper-blue-300);
@@ -39,6 +41,14 @@
         left: 35%;
         z-index: 40;
       }
+
+      paper-button {
+        color: white;
+      }
+
+      .log-button {
+        font-size: x-large;
+      }
     </style>
 
     <div class="sky">
@@ -47,7 +57,21 @@
       <sib-cloud class="two"></sib-cloud>
     </div>
 
-    <h2>Hello [[prop1]]</h2>
+    <div class="layout vertical center">
+      <paper-button raised class="log-button">Log Today's Time</paper-button>
+      <div>Last week:</div>
+      <div>09:40</div>
+      <div>07:01</div>
+      <div>10:30</div>
+      <div>09:10</div>
+      <div>09:15</div>
+      <div>09:40</div>
+      <div>07:01</div>
+      <div>10:30</div>
+      <div>09:10</div>
+      <div>09:15</div>
+      <paper-button>More stats..</paper-button>
+    </div>
 
   </template>
 
