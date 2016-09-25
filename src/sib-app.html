@@ -10,10 +10,11 @@
         display: block;
         background-color: var(--paper-blue-300);
       }
-      
+
       .sky {
         height: 250px; 
         position: relative;
+        margin-bottom: 50px;
       }
 
       sib-sun {
@@ -29,21 +30,25 @@
         top: 15%;
         left: 55%;
         z-index: 40;
+        --sky-cloud-size: 80px;
       }
 
       sib-cloud.two {
         position: absolute;
-        top: 75%;
-        left: 25%;
+        top: 70%;
+        left: 35%;
         z-index: 40;
       }
     </style>
+
     <div class="sky">
       <sib-sun></sib-sun>
       <sib-cloud class="one"></sib-cloud>
       <sib-cloud class="two"></sib-cloud>
     </div>
+
     <h2>Hello [[prop1]]</h2>
+
   </template>
 
   <script>
