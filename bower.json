@@ -3,7 +3,8 @@
   "description": "Get up earlier by tracking the time you get out of bed",
   "main": "index.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^1.4.0",
+    "paper-styles": "PolymerElements/paper-styles#^1.1.5"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

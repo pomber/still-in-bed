@@ -1,12 +1,48 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="sib-sun.html">
+<link rel="import" href="sib-cloud.html">
 
 <dom-module id="sib-app">
   <template>
     <style>
       :host {
         display: block;
+        background-color: var(--paper-blue-300);
+      }
+      
+      .sky {
+        height: 250px; 
+        position: relative;
+      }
+
+      sib-sun {
+        position: absolute;
+        top: 10%;
+        left: 5%;
+        z-index: 20;
+        --sky-sun-size: 150px;
+      }
+
+      sib-cloud.one {
+        position: absolute;
+        top: 15%;
+        left: 55%;
+        z-index: 40;
+      }
+
+      sib-cloud.two {
+        position: absolute;
+        top: 75%;
+        left: 25%;
+        z-index: 40;
       }
     </style>
+    <div class="sky">
+      <sib-sun></sib-sun>
+      <sib-cloud class="one"></sib-cloud>
+      <sib-cloud class="two"></sib-cloud>
+    </div>
     <h2>Hello [[prop1]]</h2>
   </template>
 
