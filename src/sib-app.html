@@ -72,7 +72,7 @@
     <div class="layout vertical center">
       
       <div class="time">
-        18:20
+        [[time]]
       </div>
       <paper-icon-button icon="icons:alarm-on" class="log-button">
       </paper-icon-button>
@@ -102,11 +102,19 @@
       is: 'sib-app',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'sib-app',
+        time: {
+          type: String
         },
       },
+
+      ready: function() {
+        this._updateTimer();
+      },
+
+      _updateTimer: function() {
+        this.time = new Date().toTimeString().split(" ")[0];        
+        this.async(this._updateTimer, 1000);
+      }
 
     });
   </script>
