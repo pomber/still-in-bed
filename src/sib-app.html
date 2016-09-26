@@ -63,6 +63,10 @@
       }
     </style>
 
+    <app-localstorage-document log
+      key="sib-test" data="{{list}}">
+    </app-localstorage-document>
+
     <div class="sky">
       <sib-sun></sib-sun>
       <sib-cloud class="one"></sib-cloud>
@@ -74,10 +78,11 @@
       <div class="time">
         [[time]]
       </div>
-      <paper-icon-button icon="icons:alarm-on" class="log-button">
+      <paper-icon-button 
+        icon="icons:alarm-on" class="log-button" on-tap="log">
       </paper-icon-button>
       
-      <div>Last week:</div>
+      <div>Last week:</div>      
       <div>09:40</div>
       <div>07:01</div>
       <div>10:30</div>
@@ -102,13 +107,21 @@
       is: 'sib-app',
 
       properties: {
-        time: {
-          type: String
+        time: String,
+        list: {
+          type: Array,
+          value: []
         },
       },
 
       ready: function() {
         this._updateTimer();
+      },
+
+      log: function() {
+        var item = { time: new Date().toISOString() };
+        this.push("list", item);
+        console.log(item);
       },
 
       _updateTimer: function() {
