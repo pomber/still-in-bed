@@ -64,7 +64,7 @@
     </style>
 
     <app-localstorage-document log
-      key="sib-test" data="{{list}}">
+      key="sib-prod" data="{{list}}">
     </app-localstorage-document>
 
     <div class="sky">
@@ -75,9 +75,13 @@
 
     <div class="layout vertical center">
       
-      <div class="time">
+      <div class="time" hidden$="[[todaysTime]]">
         [[time]]
       </div>
+      <div class="time" hidden$="[[!todaysTime]]">
+        [[todaysTime]]
+      </div>
+
       <paper-icon-button 
         icon="icons:alarm-on" class="log-button" on-tap="log">
       </paper-icon-button>
@@ -107,15 +111,44 @@
       is: 'sib-app',
 
       properties: {
-        time: String,
         list: {
           type: Array,
           value: []
         },
+        time: String,
+        todaysTime: String,
+        today: Object, 
       },
 
+      observers: [
+        'onChange(list, list.splices, today)'
+      ],
+
       ready: function() {
-        this._updateTimer();
+        this.tick();
+      },
+
+      tick: function() {        
+        var newTime = this._getTime(new Date());
+
+        if (!this.time || newTime < this.time) {
+          this.today = new Date();
+        }
+
+        this.time = newTime;
+        this.async(this.tick, 1000);       
+
+        //HACK observer is not working
+        this.onChange(); 
+      },
+
+      onChange: function() {        
+        var lastDate = this._getLastDate();
+        if (lastDate && this._isToday(lastDate)) {
+          this.todaysTime = this._getTime(lastDate);
+        } else {
+          this.todaysTime = null;
+        }
       },
 
       log: function() {
@@ -124,10 +157,20 @@
         console.log(item);
       },
 
-      _updateTimer: function() {
-        this.time = new Date().toTimeString().split(" ")[0];        
-        this.async(this._updateTimer, 1000);
-      }
+      _getLastDate: function() {
+        var last = this.list.slice(-1).pop();
+        if (!last) return null;
+        return new Date(last.time);
+      },
+
+      _getTime: function(date) {
+        return date.toTimeString().split(" ")[0];
+      },
+
+      _isToday: function(date) {
+        var now = new Date();
+        return now.toDateString() == date.toDateString();
+      },
 
     });
   </script>
