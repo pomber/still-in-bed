@@ -52,9 +52,14 @@
 
       .log-button {
         color: white;
-        height: 120px;
-        width: 120px;
+        height: 100px;
+        width: 100px;
         font-size: x-large;
+      }
+
+      .time {
+        color: white;
+        font-size: 5em;
       }
     </style>
 
@@ -65,12 +70,13 @@
     </div>
 
     <div class="layout vertical center">
-      <!--<paper-button raised class="log-button">
-        <iron-icon icon="icons:alarm-on"></iron-icon>
-        Log Today's Time
-      </paper-button>-->
+      
+      <div class="time">
+        18:20
+      </div>
       <paper-icon-button icon="icons:alarm-on" class="log-button">
       </paper-icon-button>
+      
       <div>Last week:</div>
       <div>09:40</div>
       <div>07:01</div>
