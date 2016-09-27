@@ -125,7 +125,7 @@
       ],
 
       ready: function() {
-        this.tick();
+        this.async(this.tick);
       },
 
       tick: function() {        
