@@ -1,0 +1,7 @@
+{
+  "name": "stillinbed",
+  "short_name": "stillinbed",
+  "description": "Get up earlier by tracking the time you get out of bed",
+  "start_url": "/",
+  "display": "standalone"
+}
