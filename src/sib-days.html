@@ -25,22 +25,12 @@
     </style>
 
     <div class="layout horizontal center">
-      <div class="layout vertical center day">
-        <div class="t">07:30</div>
-        <div>MAR 20</div>
-      </div>
-      <div class="layout vertical center day">
-        <div class="t">08:21</div>
-        <div>MAR 21</div>
-      </div>
-      <div class="layout vertical center day">
-        <div class="t">-</div>
-        <div>MAR 22</div>
-      </div>
-      <div class="layout vertical center day">
-        <div class="t">08:15</div>
-        <div>MAR 23</div>
-      </div>
+      <template is="dom-repeat" items="[[days]]">
+        <div class="layout vertical center day">
+          <div class="t">[[item.time]]</div>
+          <div>[[item.month]] [[item.day]]</div>
+        </div>
+      </template>
     </div>
 
   </template>
