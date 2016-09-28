@@ -1,0 +1,70 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="sib-days">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {}
+      
+      .day {
+        color: white;
+        border: 1px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 8px;
+        border-width: 2px;
+        border-style: solid;
+        margin: 3px;
+        padding: 4px;
+      }
+      
+      .day .t {
+        font-size: 1.5em;
+      }
+    </style>
+
+    <div class="layout horizontal center">
+      <div class="layout vertical center day">
+        <div class="t">07:30</div>
+        <div>MAR 20</div>
+      </div>
+      <div class="layout vertical center day">
+        <div class="t">08:21</div>
+        <div>MAR 21</div>
+      </div>
+      <div class="layout vertical center day">
+        <div class="t">-</div>
+        <div>MAR 22</div>
+      </div>
+      <div class="layout vertical center day">
+        <div class="t">08:15</div>
+        <div>MAR 23</div>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-days',
+
+      properties: {
+        list: Array,
+        days: {
+          type: Array,
+          value: [
+            { month: "MAR", day: "20", time: "08:15"},
+            { month: "MAR", day: "21", time: "07:25"},
+            { month: "MAR", day: "22", time: "-"},
+            { month: "MAR", day: "23", time: "08:15"},
+          ],
+        }
+      },
+
+
+
+    });
+  </script>
+</dom-module>
