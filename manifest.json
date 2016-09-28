@@ -3,5 +3,7 @@
   "short_name": "stillinbed",
   "description": "Get up earlier by tracking the time you get out of bed",
   "start_url": "/still-in-bed/",
-  "display": "standalone"
+  "display": "standalone",
+  "background_color": "#64b5f6",
+  "theme_color": "#64b5f6"
 }
