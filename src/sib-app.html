@@ -61,6 +61,22 @@
         color: white;
         font-size: 5em;
       }
+
+      .day {
+        color: white;
+        border: 1px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 8px;
+        border-width: 2px;
+        border-style: solid;
+        margin: 3px;
+        padding: 4px;
+      }
+
+      .day .t {
+        font-size: 1.5em;
+      }
     </style>
 
     <app-localstorage-document log
@@ -86,20 +102,24 @@
         icon="icons:alarm-on" class="log-button" on-tap="log">
       </paper-icon-button>
       
-      <div>Last week:</div>      
-      <div>09:40</div>
-      <div>07:01</div>
-      <div>10:30</div>
-      <div>09:10</div>
-      <div>09:15</div>
-      <div>10:30</div>
-      <div>09:10</div>
-      <div>09:15</div>
-      <div>09:40</div>
-      <div>07:01</div>
-      <div>10:30</div>
-      <div>09:10</div>
-      <div>09:15</div>
+      <div class="layout horizontal center">
+        <div class="layout vertical center day">
+          <div class="t">07:30</div>
+          <div>MAR 20</div>
+        </div>
+        <div class="layout vertical center day">
+          <div class="t">08:21</div>
+          <div>MAR 21</div>
+        </div>
+        <div class="layout vertical center day">
+          <div class="t">-</div>
+          <div>MAR 22</div>
+        </div>
+        <div class="layout vertical center day">
+          <div class="t">08:15</div>
+          <div>MAR 23</div>
+        </div>
+      </div>
       <paper-button>More stats..</paper-button>
     </div>
 
