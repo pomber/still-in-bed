@@ -1,6 +1,6 @@
 {
-  "name": "stillinbed",
-  "short_name": "stillinbed",
+  "name": "Morning",
+  "short_name": "Morning",
   "description": "Get up earlier by tracking the time you get out of bed",
   "start_url": "/still-in-bed/",
   "display": "standalone",
