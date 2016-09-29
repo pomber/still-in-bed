@@ -17,6 +17,7 @@
         border-style: solid;
         margin: 3px;
         padding: 4px;
+        text-transform: uppercase;
       }
       
       .day .t {
@@ -44,16 +45,27 @@
         list: Array,
         days: {
           type: Array,
-          value: [
-            { month: "MAR", day: "20", time: "08:15"},
-            { month: "MAR", day: "21", time: "07:25"},
-            { month: "MAR", day: "22", time: "-"},
-            { month: "MAR", day: "23", time: "08:15"},
-          ],
+          computed: 'getDays(list.splices)',
         }
       },
 
+      getDays: function() {
+        console.log("updated days");
+        var self = this;
+        var lastFour = this.list.slice(-4); 
+        return lastFour.map(function (item) {
+          var date = new Date(item.time);
+          return {
+            month: date.toString().split(" ")[1],
+            day: date.getDate(),
+            time: self._getTime(date)
+          }
+        })
+      },
 
+      _getTime: function(date) {        
+        return date.toTimeString().split(" ")[0].slice(0, 5);
+      }
 
     });
   </script>
