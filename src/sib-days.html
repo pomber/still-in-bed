@@ -1,0 +1,71 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="sib-days">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {}
+      
+      .day {
+        color: white;
+        border: 1px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 8px;
+        border-width: 2px;
+        border-style: solid;
+        margin: 3px;
+        padding: 4px;
+        text-transform: uppercase;
+      }
+      
+      .day .t {
+        font-size: 1.5em;
+      }
+    </style>
+
+    <div class="layout horizontal center">
+      <template is="dom-repeat" items="[[days]]">
+        <div class="layout vertical center day">
+          <div class="t">[[item.time]]</div>
+          <div>[[item.month]] [[item.day]]</div>
+        </div>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-days',
+
+      properties: {
+        list: Array,
+        days: {
+          type: Array,
+          computed: 'getDays(list.splices)',
+        }
+      },
+
+      getDays: function() {
+        var self = this;
+        var lastFour = this.list.slice(-4); 
+        return lastFour.map(function (item) {
+          var date = new Date(item.time);
+          return {
+            month: date.toString().split(" ")[1],
+            day: date.getDate(),
+            time: self._getTime(date)
+          }
+        })
+      },
+
+      _getTime: function(date) {        
+        return date.toTimeString().split(" ")[0].slice(0, 5);
+      }
+
+    });
+  </script>
+</dom-module>
