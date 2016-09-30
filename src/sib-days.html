@@ -76,6 +76,19 @@
 
       getDays: function() {
         var self = this;
+
+        var days = []
+        var today = new Date();
+        for (var i = -3; i <= 0; i++) {
+          var day = new Date(today);
+          day.setDate(today.getDate() + i);
+          days.push(day);
+        }
+
+        // return days.map(function (date) {
+        //   return self._getInfo(date);
+        // });
+
         var last = self.list.slice(-1)[0];
         if (!last) return [];
 
