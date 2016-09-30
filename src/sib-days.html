@@ -26,6 +26,7 @@
 
       .button {
         height: 60px;
+        width: 75px;
         background-color: white;
         color: var(--paper-blue-300);
       }
@@ -42,7 +43,7 @@
           <div>[[item.month]] [[item.day]]</div>
         </div>
       </template>
-      <div class="layout vertical center center-justified button tile">
+      <div class="layout vertical center center-justified button tile" on-tap="track">
         <div class="top" hidden$="[[today.done]]">I'm up!</div>
         <div class="top" hidden$="[[!today.done]]">[[today.time]]</div>
         <div>[[today.month]] [[today.day]]</div>
@@ -95,6 +96,12 @@
         var date = new Date();
         var info = this._getInfo(date, true);
         return info;
+      },
+
+      track: function() {
+        if (!this.today.done) {
+          this.fire("track");
+        }
       },
 
       _getInfo: function(date, missing) {

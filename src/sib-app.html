@@ -82,15 +82,8 @@
       <div class="time" hidden$="[[!todaysTime]]">
         [[todaysTime]]
       </div>
-
-      <!--<paper-icon-button 
-        icon="icons:alarm-on" class="log-button" on-tap="log">
-      </paper-icon-button>-->
-      <!--<paper-button class="log-button" on-tap="log">
-        I'm up!
-      </paper-button>-->
       
-      <sib-days list="[[list]]"></sib-days>
+      <sib-days list="[[list]]" on-track="track"></sib-days>
       <paper-button>More stats..</paper-button>
     </div>
 
@@ -142,7 +135,7 @@
         }
       },
 
-      log: function() {
+      track: function() {
         var item = { time: new Date().toISOString() };
         this.push("list", item);
         console.log(item);
