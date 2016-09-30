@@ -52,10 +52,10 @@
       }
 
       .log-button {
-        color: white;
-        height: 100px;
-        width: 100px;
-        font-size: x-large;
+        color: var(--paper-blue-300);
+        font-size: large;
+        background-color: white;
+        width: 100%;
       }
 
       .time {
@@ -83,9 +83,12 @@
         [[todaysTime]]
       </div>
 
-      <paper-icon-button 
+      <!--<paper-icon-button 
         icon="icons:alarm-on" class="log-button" on-tap="log">
-      </paper-icon-button>
+      </paper-icon-button>-->
+      <!--<paper-button class="log-button" on-tap="log">
+        I'm up!
+      </paper-button>-->
       
       <sib-days list="[[list]]"></sib-days>
       <paper-button>More stats..</paper-button>

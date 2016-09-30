@@ -7,7 +7,7 @@
     <style include="iron-flex iron-flex-alignment">
       :host {}
       
-      .day {
+      .tile {
         color: white;
         border: 1px;
         -webkit-border-radius: 10px;
@@ -20,18 +20,32 @@
         text-transform: uppercase;
       }
       
-      .day .t {
+      .day .top {
         font-size: 1.5em;
+      }
+
+      .button {
+        height: 60px;
+        background-color: white;
+        color: var(--paper-blue-300);
+      }
+
+      .button .top {
+        font-size: 1.3em;
       }
     </style>
 
     <div class="layout horizontal center">
       <template is="dom-repeat" items="[[days]]">
-        <div class="layout vertical center day">
-          <div class="t">[[item.time]]</div>
+        <div class="layout vertical center day tile">
+          <div class="top">[[item.time]]</div>
           <div>[[item.month]] [[item.day]]</div>
         </div>
       </template>
+      <div class="layout vertical center center-justified button tile">
+        <div class="top">I'm up!</div>
+        <div>SEP 29</div>
+      </div>
     </div>
 
   </template>
@@ -51,20 +65,36 @@
 
       getDays: function() {
         var self = this;
-        var lastFour = this.list.slice(-4); 
-        return lastFour.map(function (item) {
+        var last = self.list.slice(-1)[0];
+        if (!last) return [];
+
+        var lastDate = new Date(last.time);
+        var dates = self._isToday(lastDate) ?
+          this.list.slice(-4, -1):
+          this.list.slice(-3);          
+
+        return dates.map(function (item) {
           var date = new Date(item.time);
-          return {
-            month: date.toString().split(" ")[1],
-            day: date.getDate(),
-            time: self._getTime(date)
-          }
+          return self._getInfo(date);
         })
+      },
+
+      _getInfo: function(date) {
+        return {
+          month: date.toString().split(" ")[1],
+          day: date.getDate(),
+          time: this._getTime(date)
+        };     
       },
 
       _getTime: function(date) {        
         return date.toTimeString().split(" ")[0].slice(0, 5);
-      }
+      },
+
+      _isToday: function(date) {
+        var now = new Date();
+        return now.toDateString() == date.toDateString();
+      },
 
     });
   </script>
