@@ -43,8 +43,9 @@
         </div>
       </template>
       <div class="layout vertical center center-justified button tile">
-        <div class="top">I'm up!</div>
-        <div>SEP 29</div>
+        <div class="top" hidden$="[[today.done]]">I'm up!</div>
+        <div class="top" hidden$="[[!today.done]]">[[today.time]]</div>
+        <div>[[today.month]] [[today.day]]</div>
       </div>
     </div>
 
@@ -60,7 +61,11 @@
         days: {
           type: Array,
           computed: 'getDays(list.splices)',
-        }
+        },
+        today: {
+          type: Object,
+          computed: 'getToday(list.splices)',
+        },
       },
 
       getDays: function() {
@@ -79,11 +84,25 @@
         })
       },
 
-      _getInfo: function(date) {
+      getToday: function() {
+        var last = this.list.slice(-1)[0];
+        var lastDate = last && new Date(last.time);
+        
+        if (this._isToday(lastDate)) {
+          return this._getInfo(lastDate);
+        }
+
+        var date = new Date();
+        var info = this._getInfo(date, true);
+        return info;
+      },
+
+      _getInfo: function(date, missing) {
         return {
           month: date.toString().split(" ")[1],
           day: date.getDate(),
-          time: this._getTime(date)
+          time: this._getTime(date),
+          done: !missing
         };     
       },
 
@@ -92,6 +111,7 @@
       },
 
       _isToday: function(date) {
+        if (!date) return false;
         var now = new Date();
         return now.toDateString() == date.toDateString();
       },
