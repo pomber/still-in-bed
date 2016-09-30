@@ -43,17 +43,18 @@
 
     <div class="layout horizontal center">
       <template is="dom-repeat" items="[[days]]">
-        <div class="layout vertical center day tile">
+        <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
           <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
           <div class="top" hidden$="[[item.done]]">-</div>
           <div>[[item.month]] [[item.day]]</div>
         </div>
+        <div class="layout vertical center center-justified button tile" 
+          on-tap="track" hidden$="[[!item.isToday]]">
+          <div class="top" hidden$="[[item.done]]">I'm up!</div>
+          <div class="top done" hidden$="[[!item.done]]">[[item.time]]</div>
+          <div>[[item.month]] [[item.day]]</div>
+        </div>
       </template>
-      <div class="layout vertical center center-justified button tile" on-tap="track">
-        <div class="top" hidden$="[[today.done]]">I'm up!</div>
-        <div class="top done" hidden$="[[!today.done]]">[[today.time]]</div>
-        <div>[[today.month]] [[today.day]]</div>
-      </div>
     </div>
 
   </template>
@@ -68,10 +69,6 @@
         days: {
           type: Array,
           computed: 'getDays(list.splices)',
-        },
-        today: {
-          type: Object,
-          //computed: 'getToday(list.splices)',
         },
       },
 
@@ -91,21 +88,9 @@
         });
       },
 
-      getToday: function() {
-        var last = this.list.slice(-1)[0];
-        var lastDate = last && new Date(last.time);
-        
-        if (this._isToday(lastDate)) {
-          return this._getInfo(lastDate);
-        }
-
-        var date = new Date();
-        var info = this._getInfo(date, true);
-        return info;
-      },
-
-      track: function() {
-        if (!this.today.done) {
+      track: function(e) {
+        var info = e.model.item;
+        if (info.isToday && !info.done) {
           this.fire("track");
         }
       },
