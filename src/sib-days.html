@@ -44,7 +44,8 @@
     <div class="layout horizontal center">
       <template is="dom-repeat" items="[[days]]">
         <div class="layout vertical center day tile">
-          <div class="top">[[item.time]]</div>
+          <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
+          <div class="top" hidden$="[[item.done]]">-</div>
           <div>[[item.month]] [[item.day]]</div>
         </div>
       </template>
@@ -70,7 +71,7 @@
         },
         today: {
           type: Object,
-          computed: 'getToday(list.splices)',
+          //computed: 'getToday(list.splices)',
         },
       },
 
@@ -85,22 +86,9 @@
           days.push(day);
         }
 
-        // return days.map(function (date) {
-        //   return self._getInfo(date);
-        // });
-
-        var last = self.list.slice(-1)[0];
-        if (!last) return [];
-
-        var lastDate = new Date(last.time);
-        var dates = self._isToday(lastDate) ?
-          this.list.slice(-4, -1):
-          this.list.slice(-3);          
-
-        return dates.map(function (item) {
-          var date = new Date(item.time);
-          return self._getInfo(date);
-        })
+        return days.map(function (date) {
+          return self._getDayInfo(date);
+        });
       },
 
       getToday: function() {
@@ -122,12 +110,21 @@
         }
       },
 
-      _getInfo: function(date, missing) {
+      _getDayInfo: function(date) {
+        var item = this.list.find(function(item) {
+          var itemDate = new Date(item.time);
+          return itemDate.toDateString() == date.toDateString();
+        });
+
+        var itemDate = item && new Date(item.time);
+        var itemTime = item && this._getTime(itemDate); 
+
         return {
           month: date.toString().split(" ")[1],
           day: date.getDate(),
-          time: this._getTime(date),
-          done: !missing
+          time: itemTime,
+          done: !!item,
+          isToday: this._isToday(date)
         };     
       },
 
