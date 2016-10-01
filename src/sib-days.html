@@ -1,14 +1,18 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="sib-icons.html">
 
 <dom-module id="sib-days">
   <template>
     <style include="iron-flex iron-flex-alignment">
-      :host {}
+      :host {
+        color: white;
+      }
       
       .tile {
-        color: white;
         border: 1px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -42,6 +46,12 @@
     </style>
 
     <div class="layout horizontal center">
+       <!--<paper-icon-button icon="paper-tabs:chevron-left" 
+        class$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" 
+        on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1">-->
+      <paper-icon-button icon="sib:chevron-left" on-tap="previous">
+      </paper-icon-button>
+
       <template is="dom-repeat" items="[[days]]">
         <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
           <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
@@ -55,6 +65,9 @@
           <div>[[item.month]] [[item.day]]</div>
         </div>
       </template>
+
+      <paper-icon-button icon="sib:chevron-right" on-tap="next">
+      </paper-icon-button>
     </div>
 
   </template>
@@ -66,18 +79,26 @@
 
       properties: {
         list: Array,
+        start: {
+          type: Number,
+          value: -3,
+        },
         days: {
           type: Array,
           computed: 'getDays(list.splices)',
-        },
+        }
       },
+
+      _pageSize: 4,
 
       getDays: function() {
         var self = this;
 
         var days = []
         var today = new Date();
-        for (var i = -3; i <= 0; i++) {
+        var first = this.start;
+        var last = this.start + this._pageSize - 1;
+        for (var i = first; i <= last; i++) {
           var day = new Date(today);
           day.setDate(today.getDate() + i);
           days.push(day);
@@ -86,6 +107,14 @@
         return days.map(function (date) {
           return self._getDayInfo(date);
         });
+      },
+
+      previous: function () {
+        this.start -= this._pageSize;
+      },
+
+      next: function () {
+        this.start += this._pageSize;
       },
 
       track: function(e) {
