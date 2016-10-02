@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sib-icons.html">
 <link rel="import" href="sib-day-tile.html">
+<link rel="import" href="sib-today-tile.html">
 
 <dom-module id="sib-days">
   <template>
@@ -90,12 +91,9 @@
         <template is="dom-repeat" items="[[days]]">
           <sib-day-tile item="[[item]]" hidden$="[[item.isToday]]">         
           </sib-day-tile>
-          <div class="layout vertical center center-justified button tile" 
-            on-tap="track" hidden$="[[!item.isToday]]">
-            <div class="bottom">[[item.month]] [[item.day]]</div>
-            <div class="top" hidden$="[[item.done]]">I'm up!</div>
-            <div class="top done" hidden$="[[!item.done]]">[[item.time]]</div>
-          </div>
+          <sib-today-tile item="[[item]]" hidden$="[[!item.isToday]]"
+            on-tap="track" hidden$="[[!item.isToday]]">         
+          </sib-today-tile>
         </template>
       </div>
 
@@ -129,7 +127,7 @@
       attached: function() {
         var totalWidth = this._getWidth(".days");
         var margin = 4;
-        var buttonWidth = this._getWidth(".tile.button:not([hidden])") + margin;
+        var buttonWidth = this._getWidth("sib-today-tile:not([hidden])") + margin;
         var dayWidth = this._getWidth("sib-day-tile:not([hidden])") + margin;
         var remaining = totalWidth - buttonWidth;
         var dayTiles = Math.trunc(remaining / dayWidth);
