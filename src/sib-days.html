@@ -1,23 +1,46 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="sib-icons.html">
 
 <dom-module id="sib-days">
   <template>
     <style include="iron-flex iron-flex-alignment">
-      :host {}
+      :host {
+        color: white;
+        display: block;
+        width: 100%;
+      }
+
+      .container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        height: 80px; 
+      }
+
+      .days {
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+      }
       
       .tile {
-        color: white;
         border: 1px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         border-radius: 8px;
         border-width: 2px;
         border-style: solid;
-        margin: 3px;
+        margin: 2px;
         padding: 4px;
         text-transform: uppercase;
+      }
+
+      .tile.day {
+        width: 56px;
       }
       
       .day .top {
@@ -41,18 +64,31 @@
       }
     </style>
 
-    <div class="layout horizontal center">
-      <template is="dom-repeat" items="[[days]]">
-        <div class="layout vertical center day tile">
-          <div class="top">[[item.time]]</div>
-          <div>[[item.month]] [[item.day]]</div>
-        </div>
-      </template>
-      <div class="layout vertical center center-justified button tile" on-tap="track">
-        <div class="top" hidden$="[[today.done]]">I'm up!</div>
-        <div class="top done" hidden$="[[!today.done]]">[[today.time]]</div>
-        <div>[[today.month]] [[today.day]]</div>
+    <div class="container">
+       <!--<paper-icon-button icon="paper-tabs:chevron-left" 
+        class$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" 
+        on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1">-->
+      <paper-icon-button icon="sib:chevron-left" on-tap="previous">
+      </paper-icon-button>
+
+      <div class="center-justified days">
+        <template is="dom-repeat" items="[[days]]">
+          <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
+            <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
+            <div class="top" hidden$="[[item.done]]">-</div>
+            <div>[[item.month]] [[item.day]]</div>
+          </div>
+          <div class="layout vertical center center-justified button tile" 
+            on-tap="track" hidden$="[[!item.isToday]]">
+            <div class="top" hidden$="[[item.done]]">I'm up!</div>
+            <div class="top done" hidden$="[[!item.done]]">[[item.time]]</div>
+            <div>[[item.month]] [[item.day]]</div>
+          </div>
+        </template>
       </div>
+
+      <paper-icon-button icon="sib:chevron-right" on-tap="next">
+      </paper-icon-button>
     </div>
 
   </template>
@@ -64,57 +100,82 @@
 
       properties: {
         list: Array,
+        start: {
+          type: Number,
+          value: -1,
+        },
+        _pageSize: {
+          type: Number,
+          value: 2,
+        },
         days: {
           type: Array,
-          computed: 'getDays(list.splices)',
-        },
-        today: {
-          type: Object,
-          computed: 'getToday(list.splices)',
-        },
+          computed: 'getDays(list.*, start, _pageSize)',
+        }
+      },
+
+      attached: function() {
+        var totalWidth = this._getWidth(".days");
+        var margin = 4;
+        var buttonWidth = this._getWidth(".tile.button:not([hidden])") + margin;
+        var dayWidth = this._getWidth(".tile.day:not([hidden])") + margin;
+        var remaining = totalWidth - buttonWidth;
+        var dayTiles = Math.trunc(remaining / dayWidth);
+
+        this._pageSize = dayTiles + 1;
+        this.start = -dayTiles;
       },
 
       getDays: function() {
         var self = this;
-        var last = self.list.slice(-1)[0];
-        if (!last) return [];
 
-        var lastDate = new Date(last.time);
-        var dates = self._isToday(lastDate) ?
-          this.list.slice(-4, -1):
-          this.list.slice(-3);          
-
-        return dates.map(function (item) {
-          var date = new Date(item.time);
-          return self._getInfo(date);
-        })
-      },
-
-      getToday: function() {
-        var last = this.list.slice(-1)[0];
-        var lastDate = last && new Date(last.time);
-        
-        if (this._isToday(lastDate)) {
-          return this._getInfo(lastDate);
+        var days = []
+        var today = new Date();
+        var first = this.start;
+        var last = this.start + this._pageSize - 1;
+        for (var i = first; i <= last; i++) {
+          var day = new Date(today);
+          day.setDate(today.getDate() + i);
+          days.push(day);
         }
 
-        var date = new Date();
-        var info = this._getInfo(date, true);
-        return info;
+        return days.map(function (date) {
+          return self._getDayInfo(date);
+        });
       },
 
-      track: function() {
-        if (!this.today.done) {
+      previous: function () {
+        this.start -= this._pageSize;
+      },
+
+      next: function () {
+        this.start += this._pageSize;
+      },
+
+      track: function(e) {
+        var info = e.model.item;
+        if (info.isToday && !info.done) {
           this.fire("track");
         }
       },
 
-      _getInfo: function(date, missing) {
+      _getDayInfo: function(date) {
+        var item = this.list.find(function(item) {
+          var itemDate = new Date(item.time);
+          return itemDate.toDateString() == date.toDateString();
+        });
+
+        var itemDate = item && new Date(item.time);
+        var itemTime = item && this._getTime(itemDate); 
+        var day = date.getDate();
+        day = day < 10 ? '0' + day : day; 
+
         return {
           month: date.toString().split(" ")[1],
-          day: date.getDate(),
-          time: this._getTime(date),
-          done: !missing
+          day: day,
+          time: itemTime,
+          done: !!item,
+          isToday: this._isToday(date)
         };     
       },
 
@@ -127,6 +188,11 @@
         var now = new Date();
         return now.toDateString() == date.toDateString();
       },
+
+      _getWidth: function(selector) {        
+        var element = this.$$(selector);
+        return element.getBoundingClientRect().width;
+      }
 
     });
   </script>
