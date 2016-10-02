@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
@@ -28,6 +29,7 @@
       }
       
       .tile {
+        @apply(--paper-font-button);
         border: 1px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -36,7 +38,6 @@
         border-style: solid;
         margin: 2px;
         padding: 4px;
-        text-transform: uppercase;
       }
 
       .tile.day {
@@ -44,7 +45,12 @@
       }
       
       .day .top {
+        line-height: 34px;
         font-size: 1.5em;
+      }
+      
+      .bottom {
+        line-height: 18px;
       }
 
       .button {
@@ -56,7 +62,8 @@
       }
 
       .button .top {
-        font-size: 1.3em;
+        line-height: 34px;
+        font-size: 1.5em;
       }
 
       .button .top.done {
@@ -76,13 +83,13 @@
           <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
             <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
             <div class="top" hidden$="[[item.done]]">-</div>
-            <div>[[item.month]] [[item.day]]</div>
+            <div class="bottom">[[item.month]] [[item.day]]</div>
           </div>
           <div class="layout vertical center center-justified button tile" 
             on-tap="track" hidden$="[[!item.isToday]]">
             <div class="top" hidden$="[[item.done]]">I'm up!</div>
             <div class="top done" hidden$="[[!item.done]]">[[item.time]]</div>
-            <div>[[item.month]] [[item.day]]</div>
+            <div class="bottom">[[item.month]] [[item.day]]</div>
           </div>
         </template>
       </div>
