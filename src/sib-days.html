@@ -10,10 +10,21 @@
     <style include="iron-flex iron-flex-alignment">
       :host {
         color: white;
+        display: block;
+        width: 100%;
       }
 
       .container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
         height: 80px; 
+      }
+
+      .days {
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
       }
       
       .tile {
@@ -29,6 +40,7 @@
       }
 
       .tile.day {
+        width: 56px;
       }
       
       .day .top {
@@ -52,26 +64,28 @@
       }
     </style>
 
-    <div class="layout horizontal center container">
+    <div class="container">
        <!--<paper-icon-button icon="paper-tabs:chevron-left" 
         class$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" 
         on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1">-->
       <paper-icon-button icon="sib:chevron-left" on-tap="previous">
       </paper-icon-button>
 
-      <template is="dom-repeat" items="[[days]]">
-        <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
-          <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
-          <div class="top" hidden$="[[item.done]]">-</div>
-          <div>[[item.month]] [[item.day]]</div>
-        </div>
-        <div class="layout vertical center center-justified button tile" 
-          on-tap="track" hidden$="[[!item.isToday]]">
-          <div class="top" hidden$="[[item.done]]">I'm up!</div>
-          <div class="top done" hidden$="[[!item.done]]">[[item.time]]</div>
-          <div>[[item.month]] [[item.day]]</div>
-        </div>
-      </template>
+      <div id="days-container" class="center-justified days">
+        <template is="dom-repeat" items="[[days]]">
+          <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
+            <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
+            <div class="top" hidden$="[[item.done]]">-</div>
+            <div>[[item.month]] [[item.day]]</div>
+          </div>
+          <div class="layout vertical center center-justified button tile" 
+            on-tap="track" hidden$="[[!item.isToday]]">
+            <div class="top" hidden$="[[item.done]]">I'm up!</div>
+            <div class="top done" hidden$="[[!item.done]]">[[item.time]]</div>
+            <div>[[item.month]] [[item.day]]</div>
+          </div>
+        </template>
+      </div>
 
       <paper-icon-button icon="sib:chevron-right" on-tap="next">
       </paper-icon-button>
@@ -88,15 +102,29 @@
         list: Array,
         start: {
           type: Number,
-          value: -3,
+          value: -1,
+        },
+        _pageSize: {
+          type: Number,
+          value: 2,
         },
         days: {
           type: Array,
-          computed: 'getDays(list.*, start)',
+          computed: 'getDays(list.*, start, _pageSize)',
         }
       },
 
-      _pageSize: 4,
+      attached: function() {
+        var container = this.$['days-container'];
+        var totalWidth = container.getBoundingClientRect().width;
+        var buttonWidth = 87;
+        var dayWidth = 68;
+        var remaining = totalWidth - buttonWidth;
+        var dayTiles = Math.trunc(remaining / dayWidth);
+        
+        this._pageSize = dayTiles + 1;
+        this.start = -dayTiles;
+      },
 
       getDays: function() {
         var self = this;
