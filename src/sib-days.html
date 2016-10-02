@@ -34,7 +34,7 @@
         border-radius: 8px;
         border-width: 2px;
         border-style: solid;
-        margin: 3px;
+        margin: 2px;
         padding: 4px;
         text-transform: uppercase;
       }
@@ -71,7 +71,7 @@
       <paper-icon-button icon="sib:chevron-left" on-tap="previous">
       </paper-icon-button>
 
-      <div id="days-container" class="center-justified days">
+      <div class="center-justified days">
         <template is="dom-repeat" items="[[days]]">
           <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
             <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
@@ -115,13 +115,13 @@
       },
 
       attached: function() {
-        var container = this.$['days-container'];
-        var totalWidth = container.getBoundingClientRect().width;
-        var buttonWidth = 87;
-        var dayWidth = 68;
+        var totalWidth = this._getWidth(".days");
+        var margin = 4;
+        var buttonWidth = this._getWidth(".tile.button:not([hidden])") + margin;
+        var dayWidth = this._getWidth(".tile.day:not([hidden])") + margin;
         var remaining = totalWidth - buttonWidth;
         var dayTiles = Math.trunc(remaining / dayWidth);
-        
+
         this._pageSize = dayTiles + 1;
         this.start = -dayTiles;
       },
@@ -188,6 +188,11 @@
         var now = new Date();
         return now.toDateString() == date.toDateString();
       },
+
+      _getWidth: function(selector) {        
+        var element = this.$$(selector);
+        return element.getBoundingClientRect().width;
+      }
 
     });
   </script>
