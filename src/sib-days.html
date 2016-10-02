@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="sib-icons.html">
+<link rel="import" href="sib-day-tile.html">
 
 <dom-module id="sib-days">
   <template>
@@ -55,7 +56,7 @@
         text-align: center;
         border-bottom: 1px solid;
       }
-      
+
       .top {
         padding: 0 2px;
       }
@@ -87,11 +88,8 @@
 
       <div class="center-justified days">
         <template is="dom-repeat" items="[[days]]">
-          <div class="layout vertical center day tile" hidden$="[[item.isToday]]">
-            <div class="bottom">[[item.month]] [[item.day]]</div>
-            <div class="top" hidden$="[[!item.done]]">[[item.time]]</div>
-            <div class="top" hidden$="[[item.done]]">-</div>
-          </div>
+          <sib-day-tile item="[[item]]" hidden$="[[item.isToday]]">         
+          </sib-day-tile>
           <div class="layout vertical center center-justified button tile" 
             on-tap="track" hidden$="[[!item.isToday]]">
             <div class="bottom">[[item.month]] [[item.day]]</div>
@@ -132,7 +130,7 @@
         var totalWidth = this._getWidth(".days");
         var margin = 4;
         var buttonWidth = this._getWidth(".tile.button:not([hidden])") + margin;
-        var dayWidth = this._getWidth(".tile.day:not([hidden])") + margin;
+        var dayWidth = this._getWidth("sib-day-tile:not([hidden])") + margin;
         var remaining = totalWidth - buttonWidth;
         var dayTiles = Math.trunc(remaining / dayWidth);
 
