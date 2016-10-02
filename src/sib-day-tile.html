@@ -2,36 +2,21 @@
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="sib-tile-styles.html">
 
 <dom-module id="sib-day-tile">
   <template>
-    <style include="iron-flex iron-flex-alignment">
+    <style include="iron-flex iron-flex-alignment sib-tile-styles">
       :host {}
-      
-      .tile {
-        @apply(--paper-font-button);
-        border: 1px;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 8px;
-        border-width: 2px;
-        border-style: solid;
-        margin: 2px;
+
+      .tile {        
         width: 56px;
       }
       
       .date {
-        line-height: 18px;
-        width: 100%;
-        padding: 2px 2px 0 2px;
-        text-align: center;
-        border-bottom: 1px solid;
       }
       
       .time {
-        padding: 0 2px;
-        line-height: 34px;
-        font-size: 1.5em;
       }
     </style>
 
