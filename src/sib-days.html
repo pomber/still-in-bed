@@ -45,7 +45,7 @@
       }
     </style>
 
-    <div class="layout horizontal center">
+    <div class="layout horizontal center container">
        <!--<paper-icon-button icon="paper-tabs:chevron-left" 
         class$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" 
         on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1">-->
@@ -132,10 +132,12 @@
 
         var itemDate = item && new Date(item.time);
         var itemTime = item && this._getTime(itemDate); 
+        var day = date.getDate();
+        day = day < 10 ? '0' + day : day; 
 
         return {
           month: date.toString().split(" ")[1],
-          day: date.getDate(),
+          day: day,
           time: itemTime,
           done: !!item,
           isToday: this._isToday(date)
