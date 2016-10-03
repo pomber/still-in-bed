@@ -10,25 +10,32 @@
       :host {}
       
       .tile {
-        height: 60px;
-        width: 75px;
+        height: 58px;
+        width: 58px;
+
         background-color: white;
+        border-color: white;
         color: var(--paper-blue-300);
         cursor: pointer;
       }
       
       .date {
+        font-size: 14px;
+        font-weight: 400;
       }
       
       .time {
+        font-size: 19px;
+        font-weight: 400;  
       }
 
-      .time.done {
-        font-size: 1.8em;
+      .time.done {      
+        font-size: 22px;
+        font-weight: 400;
       }
     </style>
 
-    <div class="layout vertical center center-justified tile">
+    <div class="tile">
         <div class="date">[[item.month]] [[item.day]]</div>
         <div class="time" hidden$="[[item.done]]">I'm up!</div>
         <div class="time done" hidden$="[[!item.done]]">[[item.time]]</div>

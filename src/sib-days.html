@@ -126,9 +126,8 @@
 
       attached: function() {
         var totalWidth = this._getWidth(".days");
-        var margin = 4;
-        var buttonWidth = this._getWidth("sib-today-tile:not([hidden])") + margin;
-        var dayWidth = this._getWidth("sib-day-tile:not([hidden])") + margin;
+        var buttonWidth = this._getWidth("sib-today-tile:not([hidden])");
+        var dayWidth = this._getWidth("sib-day-tile:not([hidden])");
         var remaining = totalWidth - buttonWidth;
         var dayTiles = Math.trunc(remaining / dayWidth);
 
