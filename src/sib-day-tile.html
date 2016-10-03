@@ -1,0 +1,45 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="sib-tile-styles.html">
+
+<dom-module id="sib-day-tile">
+  <template>
+    <style include="iron-flex iron-flex-alignment sib-tile-styles">
+      :host {}
+
+      .tile {
+        height: 50px;
+        width: 50px;
+      }
+      
+      .date {
+        font-size: 12px;
+        font-weight: 300;
+      }
+      
+      .time {
+        font-size: 18px;
+        font-weight: 300;
+      }
+
+    </style>
+
+    <div class="tile">
+        <div class="date">[[item.month]] [[item.day]]</div>
+        <div class="time" hidden$="[[!item.done]]">[[item.time]]</div>
+        <div class="time" hidden$="[[item.done]]">-</div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-day-tile',
+
+      properties: {
+          item: Object,
+      },
+
+    });
+  </script>
+</dom-module>

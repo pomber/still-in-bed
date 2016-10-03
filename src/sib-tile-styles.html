@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="sib-tile-styles">
+  <template>
+    <style include="iron-flex iron-flex-alignment">      
+      .tile {
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 8px;
+        border-width: 2px;
+        border-style: solid;
+        margin: 2px;
+      }
+
+      .date {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        height: 33%;
+        border-bottom: 1px solid;
+
+        @apply(--paper-font-caption);
+      }
+      
+      .time {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        height: 67%;
+
+        @apply(--paper-font-menu);
+        font-size: 20px;
+        font-weight: 500;
+        /*padding: 0 2px;*/
+        /*line-height: 34px;*/
+      }
+    </style>
+  </template>
+</dom-module>
