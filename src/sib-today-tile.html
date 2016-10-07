@@ -1,0 +1,57 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="sib-tile-styles.html">
+
+<dom-module id="sib-today-tile">
+  <template>
+    <style include="iron-flex iron-flex-alignment sib-tile-styles">
+      :host {}
+      
+      .tile {
+        height: 58px;
+        width: 58px;
+
+        background-color: white;
+        border-color: white;
+        color: var(--paper-blue-300);
+        cursor: pointer;
+      }
+      
+      .date {
+        font-size: 14px;
+        font-weight: 400;
+      }
+      
+      .time {
+        font-size: 19px;
+        font-weight: 400;  
+      }
+
+      .time.done {      
+        font-size: 22px;
+        font-weight: 400;
+      }
+    </style>
+
+    <div class="tile">
+        <div class="date">[[item.month]] [[item.day]]</div>
+        <div class="time" hidden$="[[item.done]]">I'm up!</div>
+        <div class="time done" hidden$="[[!item.done]]">[[item.time]]</div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-today-tile',
+
+      properties: {
+          item: Object,
+      },
+
+    });
+  </script>
+</dom-module>
