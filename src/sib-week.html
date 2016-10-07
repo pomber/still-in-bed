@@ -20,85 +20,29 @@
       .container {
         @apply(--layout-horizontal);
         @apply(--layout-center);
-        height: 80px; 
+        @apply(--layout-center-justified);
+        @apply(--layout-wrap);
       }
 
-      .days {
-        @apply(--layout-flex);
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-      }
-      
       .tile {
-        @apply(--paper-font-button);
-        border: 1px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         border-radius: 8px;
         border-width: 2px;
         border-style: solid;
-        margin: 2px;
-      }
 
-      .tile.day {
-        width: 56px;
-      }
-      
-      .day .top {
-        line-height: 34px;
-        font-size: 1.5em;
-      }
-      
-      .bottom {
-        line-height: 18px;
-        width: 100%;
-        padding: 2px 2px 0 2px;
-        text-align: center;
-        border-bottom: 1px solid;
-      }
-
-      .top {
-        padding: 0 2px;
-      }
-
-      .button {
-        height: 60px;
-        width: 75px;
-        background-color: white;
-        color: var(--paper-blue-300);
-        cursor: pointer;
-      }
-
-      .button .top {
-        line-height: 34px;
-        font-size: 1.5em;
-      }
-
-      .button .top.done {
-        font-size: 1.8em;
+        width: 25vw;
+        height: 15vw;
+        margin: 3px;
       }
     </style>
 
     <div class="container">
-       <!--<paper-icon-button icon="paper-tabs:chevron-left" 
-        class$="[[_computeScrollButtonClass(_leftHidden, scrollable, hideScrollButtons)]]" 
-        on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="-1">-->
-      <paper-icon-button icon="sib:chevron-left" on-tap="previous">
-      </paper-icon-button>
 
-      <div class="center-justified days">
-        <template is="dom-repeat" items="[[days]]">
-          <sib-day-tile item="[[item]]" hidden$="[[item.isToday]]">         
-          </sib-day-tile>
-          <sib-today-tile item="[[item]]" hidden$="[[!item.isToday]]"
-            on-tap="track" hidden$="[[!item.isToday]]">         
-          </sib-today-tile>
-        </template>
-      </div>
+      <template is="dom-repeat" items="[1,2,3,4,5,6]">
+        <div class="tile"></div>
+      </template>
 
-      <paper-icon-button icon="sib:chevron-right" on-tap="next">
-      </paper-icon-button>
     </div>
 
   </template>
@@ -107,101 +51,6 @@
     Polymer({
 
       is: 'sib-week',
-
-      properties: {
-        list: Array,
-        start: {
-          type: Number,
-          value: -1,
-        },
-        _pageSize: {
-          type: Number,
-          value: 2,
-        },
-        days: {
-          type: Array,
-          computed: 'getDays(list.*, start, _pageSize)',
-        }
-      },
-
-      attached: function() {
-        var totalWidth = this._getWidth(".days");
-        var buttonWidth = this._getWidth("sib-today-tile:not([hidden])");
-        var dayWidth = this._getWidth("sib-day-tile:not([hidden])");
-        var remaining = totalWidth - buttonWidth;
-        var dayTiles = Math.trunc(remaining / dayWidth);
-
-        this._pageSize = dayTiles + 1;
-        this.start = -dayTiles;
-      },
-
-      getDays: function() {
-        var self = this;
-
-        var days = []
-        var today = new Date();
-        var first = this.start;
-        var last = this.start + this._pageSize - 1;
-        for (var i = first; i <= last; i++) {
-          var day = new Date(today);
-          day.setDate(today.getDate() + i);
-          days.push(day);
-        }
-
-        return days.map(function (date) {
-          return self._getDayInfo(date);
-        });
-      },
-
-      previous: function () {
-        this.start -= this._pageSize;
-      },
-
-      next: function () {
-        this.start += this._pageSize;
-      },
-
-      track: function(e) {
-        var info = e.model.item;
-        if (info.isToday && !info.done) {
-          this.fire("track");
-        }
-      },
-
-      _getDayInfo: function(date) {
-        var item = this.list.find(function(item) {
-          var itemDate = new Date(item.time);
-          return itemDate.toDateString() == date.toDateString();
-        });
-
-        var itemDate = item && new Date(item.time);
-        var itemTime = item && this._getTime(itemDate); 
-        var day = date.getDate();
-        day = day < 10 ? '0' + day : day; 
-
-        return {
-          month: date.toString().split(" ")[1],
-          day: day,
-          time: itemTime,
-          done: !!item,
-          isToday: this._isToday(date)
-        };     
-      },
-
-      _getTime: function(date) {        
-        return date.toTimeString().split(" ")[0].slice(0, 5);
-      },
-
-      _isToday: function(date) {
-        if (!date) return false;
-        var now = new Date();
-        return now.toDateString() == date.toDateString();
-      },
-
-      _getWidth: function(selector) {        
-        var element = this.$$(selector);
-        return element.getBoundingClientRect().width;
-      }
 
     });
   </script>
