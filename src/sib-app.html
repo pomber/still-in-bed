@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="sib-sky.html">
 <link rel="import" href="sib-days.html">
+<link rel="import" href="sib-week.html">
 
 <dom-module id="sib-app">
   <template>
@@ -68,6 +69,8 @@
     </app-localstorage-document>
 
     <sib-sky></sib-sky>
+
+    <sib-week list="[[list]]" on-track="track"></sib-week>
 
     <div class="layout vertical center">
       
