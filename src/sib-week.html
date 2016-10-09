@@ -42,10 +42,17 @@
       }
 
       .time {
-        @apply(--paper-font-title);
+        @apply(--paper-font-common-base);
         font-size: 28px;
         font-weight: 300;
         /*line-height: 28px;*/
+      }
+
+      .date {
+        @apply(--paper-font-common-base);
+        font-size: 16px;
+        font-weight: 300;
+        /*text-transform: uppercase;*/
       }
     </style>
 
@@ -72,7 +79,7 @@
           value: [
             { time: '07:20', date: 'Mon 03' },
             { time: '08:05', date: 'Tue 04' },
-            { time: '07:01', date: 'Wed 05' },
+            { time: '-', date: 'Wed 05' },
             { time: '07:22', date: 'Thu 06' },
             { time: '07:20', date: 'Fri 07' },
             { time: '09:43', date: 'Sat 08' },
