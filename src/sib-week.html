@@ -20,7 +20,7 @@
       }
 
       .container {
-        @apply(--layout-horizontal);
+        @apply(--layout-vertical);
         @apply(--layout-center);
         @apply(--layout-center-justified);
         @apply(--layout-wrap);
@@ -29,38 +29,56 @@
       }
 
       .tile {
-        @apply(--layout-vertical);
+        @apply(--layout-horizontal);
         @apply(--layout-center);
-        @apply(--layout-center-justified);
+        /*@apply(--layout-center-justified);*/
 
         border-radius: 8px;
         /*border: 1px solid;*/
-        background: rgba(200, 255, 200, 0.15);
+        /*background: rgba(200, 255, 200, 0.15);*/
 
-        width: 90px;
-        height: 70px;
+        width: 100%;
+        height: 20px;
         margin: 3px;
       }
 
       .tile.miss {
-        background: rgba(255, 100, 100, 0.15);
+        /*background: rgba(255, 100, 100, 0.15);*/
       }
 
       .time {
+        display: block;
+        width: 50px;
+
         @apply(--paper-font-common-base);
-        font-size: 28px;
+        font-size: 18px;
         font-weight: 300;
-        line-height: 36px;
+        text-align: center;
+        /*line-height: 36px;*/
       }
 
       .date {
+        display: block;
+        width: 60px;
+
         @apply(--paper-font-common-base);
         font-size: 18px;
         font-weight: 300;
         /*text-transform: uppercase;*/
         /*width: 100%;*/
-        /*text-align: center;*/
+        text-align: right;
+        padding-right: 10px;
+        opacity: 0.7;
         /*border-bottom: solid 1px;*/
+      }
+
+      .marker {
+        display: block;
+        border-left-style: solid;
+        border-left-width: 0;
+        margin-left: 20px;
+        height: 6px;
+        opacity: 0.7;
       }
 
       .tile.today {
@@ -75,12 +93,13 @@
         <div class$="tile [[item.klass]]">
           <span class="date">[[item.date]]</span>
           <span class="time">[[item.time]]</span>
+          <span class="marker" style$="[[item.marker]]">&nbsp</span>
         </div>
       </template>
-      <div class="tile today">
+      <!--<div class="tile today">
         <span class="date">[[item.date]]</span>
         <span class="time">[[item.time]]</span>
-      </div>    
+      </div>    -->
         
 
     </div>
@@ -95,12 +114,12 @@
       properties: {
         items: {
           value: [
-            { time: '07:20', date: 'Mon 03' },
-            { time: '08:05', date: 'Tue 04' },
-            { time: '-', date: 'Wed 05', klass: 'miss' },
-            { time: '07:22', date: 'Thu 06' },
-            { time: '07:20', date: 'Fri 07' },
-            { time: '09:43', date: 'Sat 08' },
+            { time: '07:20', date: 'Mon 03', marker: 'border-left-width: 20px' },
+            { time: '08:05', date: 'Tue 04', marker: 'border-left-width: 120px' },
+            { time: '     ', date: 'Wed 05' },
+            { time: '07:22', date: 'Thu 06', marker: 'border-left-width: 41px' },
+            { time: '07:20', date: 'Fri 07', marker: 'border-left-width: 100px' },
+            { time: '09:43', date: 'Sat 08', marker: 'border-left-width: 10px' },
           ]
         }
       }
