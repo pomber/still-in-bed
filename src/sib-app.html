@@ -38,7 +38,7 @@
 
     <sib-panel on-track="track" up="[[todaysTime]]"></sib-panel>
 
-    <sib-week list="[[list]]"></sib-week>
+    <sib-week list="[[fakeList]]"></sib-week>
 
   </template>
 
@@ -54,7 +54,16 @@
         },
         time: String,
         todaysTime: String,
-        today: Object, 
+        today: Object,
+        fakeList: {
+          value: [
+            {"time":"2016-10-05T07:14:14.302Z"},
+            {"time":"2016-10-07T08:04:14.302Z"},
+            {"time":"2016-10-08T07:26:14.302Z"},
+            {"time":"2016-10-09T06:47:14.302Z"},
+            {"time":"2016-10-10T09:10:14.302Z"},
+          ]
+        } 
       },
 
       observers: [

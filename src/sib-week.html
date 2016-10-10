@@ -138,10 +138,10 @@
     </svg>
 
     <div class="container">
-      <template is="dom-repeat" items="[[items]]">
-        <div class$="tile [[item.klass]]">
+      <template is="dom-repeat" items="[[coords]]">
+        <div class="tile">
           <!--<span class="time">[[item.time]]</span>-->
-          <span class="date">[[item.date]]</span>
+          <span class="date">[[item.l]]</span>
           <!--<span class="marker" style$="[[item.marker]]">&nbsp</span>-->
         </div>
       </template>
@@ -160,17 +160,6 @@
       is: 'sib-week',
 
       properties: {
-        items: {
-          value: [
-            { time: '07:20', date: 'M' },
-            { time: '08:05', date: 'T' },
-            { time: '  -  ', date: 'W' },
-            { time: '07:22', date: 'T' },
-            { time: '07:20', date: 'F' },
-            { time: '09:43', date: 'S' },
-            { time: '09:11', date: 'S' },
-          ]
-        },
         coords: {
           value: [
             { x:  18, y: 30, l: 'M' },
@@ -185,8 +174,41 @@
       },
 
       observers: [
+        '_compute(list.*)',
         '_render(coords.*)'
       ],
+
+      _compute: function() {
+        if (!this.coords || !this.coords.length) return;
+
+        var days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        var coords = [];
+        var today = new Date();
+        for(var i = -6; i <= 0; i++) {
+          var day = new Date(today);
+          day.setDate(today.getDate() + i);
+          var info = {
+            x: this.coords[i+6].x,
+            y: this._getY(day),
+            l: days[day.getDay()]
+          };
+          coords.push(info);
+        }       
+        this.set('coords', coords);
+      },
+
+      _getY: function(date) {
+        var item = this.list.find(function(item) {
+          var itemDate = new Date(item.time);
+          return itemDate.toDateString() == date.toDateString();
+        });
+
+        if (!item) return null;
+
+        var d = item && new Date(item.time);
+        var mins = d.getHours() * 60 + d.getMinutes();
+        return 20;
+      },
 
       _render: function() {
         var svg = Polymer.dom(this.$.svg);
@@ -200,6 +222,8 @@
         svg.appendChild(path);        
 
         for (i = 0; i < this.coords.length; i++) {
+          if (!this.coords[i].y) continue;
+
           var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
           circle.setAttribute('cx', this.coords[i].x);
           circle.setAttribute('cy', this.coords[i].y);
@@ -221,19 +245,26 @@
         if (!this.coords || !this.coords.length) return '';
 
         var y0 = this.coords[0].y;
+        var i = 0;
+        while(!y0 && i < this.coords.length) {
+          y0 = this.coords[i++].y;
+        }
+
+        if (!y0) return ''; 
+
         var path = 'M-5 ' + y0;
+        var prev = {x: -5, y: y0};
 
         for (var i = 0; i < this.coords.length; i++) {
           var c = this.coords[i];
-          var p = i == 0 ? 
-            {x: c.x-10, y: c.y} : this.coords[i-1];
-          var n = i == this.coords.length-1 ? 
-            {x: c.x+10, y: c.y} : this.coords[i+1];
+          if (!c.y) continue;
 
           path += ' C'
-            + (p.x + c.x) / 2 + ' ' + p.y + ' '
-            + (p.x + c.x) / 2 + ' ' + c.y + ' ' 
+            + (prev.x + c.x) / 2 + ' ' + prev.y + ' '
+            + (prev.x + c.x) / 2 + ' ' + c.y + ' ' 
             + c.x + ' ' + c.y;
+
+          prev = c;
         }
 
         path += ' h100 v500 h-500';
