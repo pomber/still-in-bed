@@ -194,6 +194,23 @@
           };
           coords.push(info);
         }       
+
+        var ymin = 9999;
+        var ymax = 0;
+        coords.forEach(function (c) {
+          if (c.y) {
+            ymin = Math.min(c.y, ymin);
+            ymax = Math.max(c.y, ymax);
+          }
+        });
+
+        coords.forEach(function (c) {
+          if (c.y) {
+            var h = (c.y - ymin) / (ymax - ymin);
+            c.y = 90 - h * 80;  
+          }
+        });
+
         this.set('coords', coords);
       },
 
@@ -207,7 +224,7 @@
 
         var d = item && new Date(item.time);
         var mins = d.getHours() * 60 + d.getMinutes();
-        return 20;
+        return mins;
       },
 
       _render: function() {
