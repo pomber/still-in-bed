@@ -29,10 +29,10 @@
         height: 160px;
         margin: 0 auto;
         position: relative;
-        border: 6px solid #fff;
+        border: 5px solid rgba(255,255,255,0.8);
         border-radius: 50%;
         margin: 80px 10px;
-        background-color: rgba(255,255,255, 0.2);
+        background-color: var(--primary-color);
         box-shadow: 0 1px 8px rgba(34,34,34,0.3);
       }
 
@@ -59,9 +59,9 @@
       }
     </style>
 
-    <sib-timer on-tick="tick" time="{{time}}"></sib-timer>
+    <sib-timer on-tick="tick" time="{{now}}" date="{{date}}"></sib-timer>
 
-    <div class="circle">
+    <div class="circle" on-tap="track">
       <div class="beat"></div>
       <span class="text">I'm up!</span>
       <span class="time">[[time]]</span>
@@ -75,6 +75,14 @@
       is: 'sib-panel',
 
       properties: {
+        time: {
+          type: String,
+          computed: '_time(now, up)'
+        },
+        up: {
+          type: Boolean,
+          value: false,
+        },
         animationConfig: {
           value: function() {
             return {
@@ -103,8 +111,19 @@
       // },
 
       tick: function(e) {
-        this.playAnimation('beat');
-        var info = e.detail;        
+        if (!this.up) {
+          this.playAnimation('beat');
+        }        
+      },
+
+      _time: function(now, up) {
+        return up || now;
+      },
+
+      track: function(e) {
+        if (!this.up) {
+          this.fire('track', this.date);
+        }        
       }
 
     });

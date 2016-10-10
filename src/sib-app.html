@@ -36,7 +36,7 @@
       key="sib-prod" data="{{list}}">
     </app-localstorage-document>
 
-    <sib-panel></sib-panel>
+    <sib-panel on-track="track" up="[[todaysTime]]"></sib-panel>
 
     <sib-week list="[[list]]"></sib-week>
 
@@ -88,8 +88,9 @@
         }
       },
 
-      track: function() {
-        var item = { time: new Date().toISOString() };
+      track: function(e) {
+        var date = e.detail;
+        var item = { time: date.toISOString() };
         this.push("list", item);
         console.log(item);
       },

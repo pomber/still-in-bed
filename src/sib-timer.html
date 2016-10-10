@@ -10,6 +10,10 @@
       time: {
         type: Object,
         notify: true          
+      },
+      date: {
+        type: Object,
+        notify: true          
       }
     },
 
@@ -26,6 +30,7 @@
       };
 
       this.set('time', info.time);
+      this.set('date', info.date);
       this.fire('tick', info);
       this.async(this.tick, 1000); 
     }
