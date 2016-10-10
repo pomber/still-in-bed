@@ -104,6 +104,17 @@
         stroke-width: 5;
         stroke-opacity: 0.3;
       }
+
+      svg text {
+        @apply(--paper-font-common-base);
+        font-size: 9px;
+        font-weight: 200;
+        stroke-opacity: 0.2;
+        stroke: white;
+        fill: white;
+        fill-opacity: 0.2;
+        text-anchor: middle;
+      }
     </style>
 
     <div class="container">
@@ -149,13 +160,13 @@
         },
         coords: {
           value: [
-            { x: 18, y: 30 },
-            { x: 46, y: 40 },
-            { x: 74, y: 76 },
-            { x: 102, y: 35 },
-            { x: 130, y: 5 },
-            { x: 158, y: 50 },
-            { x: 186, y: 20 },
+            { x:  18, y: 30, l: 'M' },
+            { x:  46, y: 40, l: 'T' },
+            { x:  74, y: 76, l: 'W' },
+            { x: 102, y: 35, l: 'T' },
+            { x: 130, y:  5, l: 'F' },
+            { x: 158, y: 50, l: 'S' },
+            { x: 186, y: 20, l: 'S' },
           ]
         }
       },
@@ -180,6 +191,16 @@
           circle.setAttribute('cx', this.coords[i].x);
           circle.setAttribute('cy', this.coords[i].y);
           svg.appendChild(circle);
+
+          // if (i % 3 <= 3) {
+          //   var txtNode = document.createTextNode(this.coords[i].l);
+          //   var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          //   text.setAttribute('x', this.coords[i].x);
+          //   text.setAttribute('y', this.coords[i].y);
+          //   text.setAttribute('dy', 13);
+          //   text.appendChild(txtNode);  
+          //   svg.appendChild(text);
+          // }
         }
       },
 
