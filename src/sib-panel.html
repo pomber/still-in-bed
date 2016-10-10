@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="sib-timer.html">
 <link rel="import" href="beat-animation.html">
 
 <dom-module id="sib-panel">
@@ -58,10 +59,12 @@
       }
     </style>
 
+    <sib-timer on-tick="tick" time="{{time}}"></sib-timer>
+
     <div class="circle">
       <div class="beat"></div>
       <span class="text">I'm up!</span>
-      <span class="time">16:52:31</span>
+      <span class="time">[[time]]</span>
     </div>
 
   </template>
@@ -75,12 +78,13 @@
         animationConfig: {
           value: function() {
             return {
-              'entry': {
+              'beat': {
                 name: 'beat-animation',
                 node: this.$$(".circle .beat"),
                 timing: {
                   duration: 1000,
-                  iterations: 'Infinity',
+                  iterations: 1,
+                  delay: -100,
                 }
               }              
             }
@@ -92,11 +96,16 @@
         Polymer.NeonAnimationRunnerBehavior
       ],
 
-      ready: function () {
-        this.async(function () {
-          this.playAnimation('entry');
-        }, 1);        
-      },
+      // ready: function() {
+      //   this.async(function () {
+      //     this.playAnimation('entry');
+      //   }, 1);        
+      // },
+
+      tick: function(e) {
+        this.playAnimation('beat');
+        var info = e.detail;        
+      }
 
     });
   </script>
