@@ -108,22 +108,9 @@
 
     <div class="container">
 
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1" height="" viewBox="0 0 200 100">
-                 
-        <!--<path d="M-50 105 L-50 10 C5 10 5 10 10 10 C 15 10 15 90 20 90 C 25 90 25 72 30 72 C40 72 40 50 50 50 C55 50 55 47 60 47 C65 47 65 62 70 62 C85 62 85 62 150 62 L 150 150 Z"
-            stroke-opacity="1" stroke="#8BC34A" fill="#4CAF50"
-            fill-opacity="1" stroke-width="2" stroke-linejoin="round"/>                -->
-
-        <path d$="[[path]]"/>
-
-        <circle cx="18" cy="10"/>
-        <circle cx="46" cy="40"/>
-        <circle cx="74" cy="76"/>
-        <circle cx="102" cy="35"/>
-        <circle cx="130" cy="45"/>
-        <circle cx="158" cy="50"/>
-        <circle cx="186" cy="20"/>
-        
+      <svg id="svg"
+        xmlns="http://www.w3.org/2000/svg" version="1.1" 
+        viewBox="0 0 200 100">        
       </svg>
 
       <template is="dom-repeat" items="[[items]]">
@@ -151,18 +138,52 @@
       properties: {
         items: {
           value: [
-            { time: '07:20', date: 'Mo 03', marker: 'border-left-width: 20px' },
-            { time: '08:05', date: 'Tu 04', marker: 'border-left-width: 120px' },
+            { time: '07:20', date: 'Mo 03' },
+            { time: '08:05', date: 'Tu 04' },
             { time: '  -  ', date: 'We 05' },
-            { time: '07:22', date: 'Th 06', marker: 'border-left-width: 41px' },
-            { time: '07:20', date: 'Fr 07', marker: 'border-left-width: 100px' },
-            { time: '09:43', date: 'Sa 08', marker: 'border-left-width: 10px' },
-            { time: '09:11', date: 'Su 09', marker: 'border-left-width: 10px' },
+            { time: '07:22', date: 'Th 06' },
+            { time: '07:20', date: 'Fr 07' },
+            { time: '09:43', date: 'Sa 08' },
+            { time: '09:11', date: 'Su 09' },
           ]
         },
         path: {
           type: String,
           value: "M-5 105 L0 10 L 18 10 L 46 40 L 74 76 L 102 35 L 130 45 L 158 50 L 186 20 L 205 20 L 205 105"
+        },
+        coords: {
+          value: [
+            { x: 18, y: 10 },
+            { x: 46, y: 40 },
+            { x: 74, y: 76 },
+            { x: 102, y: 35 },
+            { x: 130, y: 45 },
+            { x: 158, y: 50 },
+            { x: 186, y: 20 },
+          ]
+        }
+      },
+
+      observers: [
+        '_render(coords)'
+      ],
+
+      _render: function() {
+        var svg = Polymer.dom(this.$.svg);
+
+        while (svg.firstChild) {
+          svg.removeChild(svg.firstChild);
+        }
+
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', this.path);
+        svg.appendChild(path);        
+
+        for (i = 0; i < this.coords.length; i++) {
+          var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', this.coords[i].x);
+          circle.setAttribute('cy', this.coords[i].y);
+          svg.appendChild(circle);
         }
       }
 
