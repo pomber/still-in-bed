@@ -1,0 +1,131 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="sib-timer.html">
+<link rel="import" href="beat-animation.html">
+
+<dom-module id="sib-panel">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        color: white;
+        display: block;
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-center);
+      }
+
+      .circle {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-center);
+        z-index: 1;
+        width: 160px;
+        height: 160px;
+        margin: 0 auto;
+        position: relative;
+        border: 5px solid rgba(255,255,255,0.8);
+        border-radius: 50%;
+        margin: 80px 10px;
+        background-color: var(--primary-color);
+        box-shadow: 0 1px 8px rgba(34,34,34,0.3);
+      }
+
+      .text {
+        @apply(--paper-font-common-base);
+        font-size: 36px;
+        font-weight: 300;
+      }
+
+      .time {
+        @apply(--paper-font-common-base);
+        font-size: 28px;
+        font-weight: 300;
+      }
+
+      .beat {
+        opacity: 0;
+        position: absolute;
+        z-index: 0;
+        background: white;
+        border-radius: 50%;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <sib-timer on-tick="tick" time="{{now}}" date="{{date}}"></sib-timer>
+
+    <div class="circle" on-tap="track">
+      <div class="beat"></div>
+      <span class="text">I'm up!</span>
+      <span class="time">[[time]]</span>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-panel',
+
+      properties: {
+        time: {
+          type: String,
+          computed: '_time(now, up)'
+        },
+        up: {
+          type: Boolean,
+          value: false,
+        },
+        animationConfig: {
+          value: function() {
+            return {
+              'beat': {
+                name: 'beat-animation',
+                node: this.$$(".circle .beat"),
+                timing: {
+                  duration: 1000,
+                  iterations: 1,
+                  delay: -100,
+                }
+              }              
+            }
+          }      
+        }
+      },
+
+      behaviors: [
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      // ready: function() {
+      //   this.async(function () {
+      //     this.playAnimation('entry');
+      //   }, 1);        
+      // },
+
+      tick: function(e) {
+        if (!this.up) {
+          this.playAnimation('beat');
+        }        
+      },
+
+      _time: function(now, up) {
+        return up || now;
+      },
+
+      track: function(e) {
+        if (!this.up) {
+          this.fire('track', this.date);
+        }        
+      }
+
+    });
+  </script>
+</dom-module>

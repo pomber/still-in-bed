@@ -1,0 +1,294 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="sib-icons.html">
+<link rel="import" href="sib-day-tile.html">
+<link rel="import" href="sib-today-tile.html">
+
+<dom-module id="sib-week">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        color: white;
+        display: block;
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-center);
+      }
+
+      .container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        @apply(--layout-wrap);
+        width: 100%;
+        /*border: solid 1px;*/
+        background-color: var(--primary-color);
+        padding-bottom: 20px;
+      }
+
+      .tile {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--layout-end-justified);
+        /*@apply(--layout-center-justified);*/
+
+        border-radius: 8px;
+        /*border: 1px solid;*/
+        /*background: rgba(200, 255, 200, 0.15);*/
+
+        width: 14%;
+        height: 40px;
+      }
+
+      .tile.miss {
+        /*background: rgba(255, 100, 100, 0.15);*/
+      }
+
+      /*.time {
+        @apply(--paper-font-common-base);
+        font-size: 17px;
+        font-weight: 300;
+        text-align: center;
+      }*/
+
+      .date {
+        @apply(--paper-font-common-base);
+        font-size: 16px;
+        font-weight: 300;
+        /*text-transform: uppercase;*/
+        /*width: 100%;*/
+        text-align: center;
+        /*padding-right: 10px;*/
+        opacity: 0.8;
+        /*border-bottom: solid 1px;*/
+      }
+
+      .tile.today {
+        width: 286px;
+        height: 60px;
+      }
+
+      svg {
+        width: 100vw;
+        height: 50vw;
+        display: block;
+        /*background-color: var(--paper-light-blue-300);*/
+      }
+
+      svg path {
+        stroke-opacity: 0.7;
+        stroke: white;
+        fill: var(--primary-color);
+        stroke-width: 2;
+        stroke-linejoin: round;
+      }
+
+      svg circle {
+        r: 2;
+        fill: white;
+        fill-opacity: 0.7;
+        stroke: white;
+        stroke-width: 5;
+        stroke-opacity: 0.3;
+      }
+
+      svg text {
+        @apply(--paper-font-common-base);
+        font-size: 9px;
+        font-weight: 200;
+        stroke-opacity: 0.2;
+        stroke: white;
+        fill: white;
+        fill-opacity: 0.2;
+        text-anchor: middle;
+      }
+
+      .now {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-center);
+        @apply(--paper-font-common-base);
+        font-size: 27px;
+        font-weight: 400;
+        border-radius: 50%;
+        background-color: var(--primary-color-dark);        
+        height: 100px;
+        width: 100px;
+      }
+
+      .now .time {
+        font-size: 22px;
+        font-weight: 300;
+      }
+    </style>
+<!--
+    <div class="now">
+      <span>I'm Up!</span>
+      <span class="time">12:29:34</span>
+    </div>-->
+
+    <svg id="svg"
+      xmlns="http://www.w3.org/2000/svg" version="1.1" 
+      viewBox="0 0 200 100">        
+    </svg>
+
+    <div class="container">
+      <template is="dom-repeat" items="[[coords]]">
+        <div class="tile">
+          <!--<span class="time">[[item.time]]</span>-->
+          <span class="date">[[item.l]]</span>
+          <!--<span class="marker" style$="[[item.marker]]">&nbsp</span>-->
+        </div>
+      </template>
+      <!--<div class="tile today">
+        <span class="date">[[item.date]]</span>
+        <span class="time">[[item.time]]</span>
+      </div>    -->        
+
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-week',
+
+      properties: {
+        coords: {
+          value: [
+            { x:  18, y: 30, l: 'M' },
+            { x:  46, y: 40, l: 'T' },
+            { x:  74, y: 76, l: 'W' },
+            { x: 102, y: 35, l: 'T' },
+            { x: 130, y: 90, l: 'F' },
+            { x: 158, y: 50, l: 'S' },
+            { x: 186, y: 10, l: 'S' },
+          ]
+        }
+      },
+
+      observers: [
+        '_compute(list.*)',
+        '_render(coords.*)'
+      ],
+
+      _compute: function() {
+        if (!this.coords || !this.coords.length) return;
+
+        var days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        var coords = [];
+        var today = new Date();
+        for(var i = -6; i <= 0; i++) {
+          var day = new Date(today);
+          day.setDate(today.getDate() + i);
+          var info = {
+            x: this.coords[i+6].x,
+            y: this._getY(day),
+            l: days[day.getDay()]
+          };
+          coords.push(info);
+        }       
+
+        var ymin = 9999;
+        var ymax = 0;
+        coords.forEach(function (c) {
+          if (c.y) {
+            ymin = Math.min(c.y, ymin);
+            ymax = Math.max(c.y, ymax);
+          }
+        });
+
+        coords.forEach(function (c) {
+          if (c.y) {
+            var h = (c.y - ymin) / (ymax - ymin);
+            c.y = 90 - h * 80;  
+          }
+        });
+
+        this.set('coords', coords);
+      },
+
+      _getY: function(date) {
+        var item = this.list.find(function(item) {
+          var itemDate = new Date(item.time);
+          return itemDate.toDateString() == date.toDateString();
+        });
+
+        if (!item) return null;
+
+        var d = item && new Date(item.time);
+        var mins = d.getHours() * 60 + d.getMinutes();
+        return mins;
+      },
+
+      _render: function() {
+        var svg = Polymer.dom(this.$.svg);
+
+        while (svg.firstChild) {
+          svg.removeChild(svg.firstChild);
+        }
+
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', this._getPath());
+        svg.appendChild(path);        
+
+        for (i = 0; i < this.coords.length; i++) {
+          if (!this.coords[i].y) continue;
+
+          var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', this.coords[i].x);
+          circle.setAttribute('cy', this.coords[i].y);
+          svg.appendChild(circle);
+
+          // if (i % 3 <= 3) {
+          //   var txtNode = document.createTextNode(this.coords[i].l);
+          //   var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          //   text.setAttribute('x', this.coords[i].x);
+          //   text.setAttribute('y', this.coords[i].y);
+          //   text.setAttribute('dy', 13);
+          //   text.appendChild(txtNode);  
+          //   svg.appendChild(text);
+          // }
+        }
+      },
+
+      _getPath: function() {
+        if (!this.coords || !this.coords.length) return '';
+
+        var y0 = this.coords[0].y;
+        var i = 0;
+        while(!y0 && i < this.coords.length) {
+          y0 = this.coords[i++].y;
+        }
+
+        if (!y0) return ''; 
+
+        var path = 'M-5 ' + y0;
+        var prev = {x: -5, y: y0};
+
+        for (var i = 0; i < this.coords.length; i++) {
+          var c = this.coords[i];
+          if (!c.y) continue;
+
+          path += ' C'
+            + (prev.x + c.x) / 2 + ' ' + prev.y + ' '
+            + (prev.x + c.x) / 2 + ' ' + c.y + ' ' 
+            + c.x + ' ' + c.y;
+
+          prev = c;
+        }
+
+        path += ' h100 v500 h-500';
+        console.log(path);
+        return path;
+      }
+
+    });
+  </script>
+</dom-module>

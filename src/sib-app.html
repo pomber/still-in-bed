@@ -7,59 +7,28 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="sib-sky.html">
-<link rel="import" href="sib-days.html">
+<link rel="import" href="sib-panel.html">
+<link rel="import" href="sib-week.html">
 
 <dom-module id="sib-app">
   <template>
     <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
-        background-color: var(--paper-blue-300);
+        height: 100vh;
+        width: 100vw;
+
+        --primary-color: var(--paper-light-blue-400);
+        --primary-color-light: var(--paper-light-blue-300);
+        --primary-color-dark: var(--paper-light-blue-600);
+        --accent-color: var(--paper-amber-300);
+
+        background: linear-gradient(var(--primary-color-light), var(--primary-color-dark) 55%); 
       }
 
-      .sky {
-        height: 250px; 
-        position: relative;
-        margin-bottom: 50px;
-      }
-
-      sib-sun {
+      sib-week {
         position: absolute;
-        top: 10%;
-        left: 5%;
-        z-index: 20;
-        --sky-sun-size: 150px;
-      }
-
-      sib-cloud.one {
-        position: absolute;
-        top: 15%;
-        right: 5%;
-        z-index: 40;
-        --sky-cloud-size: 80px;
-      }
-
-      sib-cloud.two {
-        position: absolute;
-        top: 70%;
-        left: 35%;
-        z-index: 40;
-      }
-
-      paper-button {
-        color: white;
-      }
-
-      .log-button {
-        color: var(--paper-blue-300);
-        font-size: large;
-        background-color: white;
-        width: 100%;
-      }
-
-      .time {
-        color: white;
-        font-size: 5em;
+        bottom: 0;
       }
     </style>
 
@@ -67,22 +36,9 @@
       key="sib-prod" data="{{list}}">
     </app-localstorage-document>
 
-    <sib-sky></sib-sky>
+    <sib-panel on-track="track" up="[[todaysTime]]"></sib-panel>
 
-    <div class="layout vertical center">
-      
-      <div class="time" hidden$="[[todaysTime]]">
-        [[time]]
-      </div>
-      <div class="time" hidden$="[[!todaysTime]]">
-        [[todaysTime]]
-      </div>
-      
-      <sib-days list="[[list]]" on-track="track"></sib-days>
-      <paper-button>More stats..</paper-button>
-      
-      <div style="height: 400px"></div>
-    </div>
+    <sib-week list="[[list]]"></sib-week>
 
   </template>
 
@@ -98,7 +54,16 @@
         },
         time: String,
         todaysTime: String,
-        today: Object, 
+        today: Object,
+        listFake: {
+          value: [
+            {"time":"2016-10-05T07:14:14.302Z"},
+            {"time":"2016-10-07T08:04:14.302Z"},
+            {"time":"2016-10-08T07:26:14.302Z"},
+            {"time":"2016-10-09T06:47:14.302Z"},
+            {"time":"2016-10-10T09:10:14.302Z"},
+          ]
+        } 
       },
 
       observers: [
@@ -132,8 +97,9 @@
         }
       },
 
-      track: function() {
-        var item = { time: new Date().toISOString() };
+      track: function(e) {
+        var date = e.detail;
+        var item = { time: date.toISOString() };
         this.push("list", item);
         console.log(item);
       },

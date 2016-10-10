@@ -2,7 +2,7 @@
   "name": "Morning",
   "short_name": "Morning",
   "description": "Get up earlier by tracking the time you get out of bed",
-  "start_url": "/still-in-bed/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#64b5f6",
   "theme_color": "#64b5f6"
