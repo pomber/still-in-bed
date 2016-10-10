@@ -15,31 +15,20 @@
     <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
+        height: 100vh;
+        width: 100vw;
+
         --primary-color: var(--paper-light-blue-400);
         --primary-color-light: var(--paper-light-blue-300);
         --primary-color-dark: var(--paper-light-blue-600);
         --accent-color: var(--paper-amber-300);
 
-        background: linear-gradient(var(--primary-color-light), var(--primary-color-dark) 45%) 
+        background: linear-gradient(var(--primary-color-light), var(--primary-color-dark) 55%); 
       }
 
-      paper-button {
-        color: white;
-      }
-
-      .log-button {
-        color: var(--paper-blue-300);
-        font-size: large;
-        background-color: white;
-        width: 100%;
-      }
-
-      .time {
-        color: white;
-        font-size: 5em;
-      }
-      .more {
-        background-color: var(--primary-color);
+      sib-week {
+        position: absolute;
+        bottom: 0;
       }
     </style>
 
@@ -47,24 +36,8 @@
       key="sib-prod" data="{{list}}">
     </app-localstorage-document>
 
-    <sib-sky></sib-sky>
 
     <sib-week list="[[list]]"></sib-week>
-
-    <div class="layout vertical center more">
-      
-      <!--<div class="time" hidden$="[[todaysTime]]">
-        [[time]]
-      </div>
-      <div class="time" hidden$="[[!todaysTime]]">
-        [[todaysTime]]
-      </div>-->
-      
-      <!--<sib-days list="[[list]]" on-track="track"></sib-days>-->
-      <!--<paper-button>More stats..</paper-button>-->
-      
-      <div style="height: 400px"></div>
-    </div>
 
   </template>
 
