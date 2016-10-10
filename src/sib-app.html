@@ -62,6 +62,9 @@
         color: white;
         font-size: 5em;
       }
+      .more {
+        background-color: var(--paper-light-blue-400);
+      }
     </style>
 
     <app-localstorage-document
@@ -72,7 +75,7 @@
 
     <sib-week list="[[list]]" on-track="track"></sib-week>
 
-    <div class="layout vertical center">
+    <div class="layout vertical center more">
       
       <div class="time" hidden$="[[todaysTime]]">
         [[time]]
