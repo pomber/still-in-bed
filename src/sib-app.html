@@ -15,7 +15,12 @@
     <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
-        background: linear-gradient(var(--paper-light-blue-200), var(--paper-light-blue-600) 40%) 
+        --primary-color: var(--paper-light-blue-400);
+        --primary-color-light: var(--paper-light-blue-200);
+        --primary-color-dark: var(--paper-light-blue-600);
+        --accent-color: var(--paper-amber-300);
+
+        background: linear-gradient(var(--primary-color-light), var(--primary-color-dark) 40%) 
       }
 
       paper-button {
@@ -34,7 +39,7 @@
         font-size: 5em;
       }
       .more {
-        background-color: var(--paper-light-blue-400);
+        background-color: var(--primary-color);
       }
     </style>
 
