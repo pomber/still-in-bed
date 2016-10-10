@@ -115,9 +115,9 @@
 
       <template is="dom-repeat" items="[[items]]">
         <div class$="tile [[item.klass]]">
-          <span class="time">[[item.time]]</span>
+          <!--<span class="time">[[item.time]]</span>-->
           <span class="date">[[item.date]]</span>
-          <span class="marker" style$="[[item.marker]]">&nbsp</span>
+          <!--<span class="marker" style$="[[item.marker]]">&nbsp</span>-->
         </div>
       </template>
       <!--<div class="tile today">
@@ -187,15 +187,24 @@
         if (!this.coords || !this.coords.length) return '';
 
         var y0 = this.coords[0].y;
-        var p = 'M-5 ' + y0;
+        var path = 'M-5 ' + y0;
 
         for (var i = 0; i < this.coords.length; i++) {
           var c = this.coords[i];
-          p += ' L' + c.x + ' ' + c.y;
+          var p = i == 0 ? 
+            {x: c.x-10, y: c.y} : this.coords[i-1];
+          var n = i == this.coords.length-1 ? 
+            {x: c.x+10, y: c.y} : this.coords[i+1];
+
+          path += ' C'
+            + (p.x + c.x) / 2 + ' ' + p.y + ' '
+            + (p.x + c.x) / 2 + ' ' + c.y + ' ' 
+            + c.x + ' ' + c.y;
         }
 
-        p += ' h100 v500 h-500';
-        return p;
+        path += ' h100 v500 h-500';
+        console.log(path);
+        return path;
       }
 
     });
