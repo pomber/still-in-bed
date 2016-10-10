@@ -95,6 +95,15 @@
         stroke-width: 2;
         stroke-linejoin: round;
       }
+
+      svg circle {
+        r: 2;
+        fill: white;
+        fill-opacity: 0.7;
+        stroke: white;
+        stroke-width: 5;
+        stroke-opacity: 0.3;
+      }
     </style>
 
     <div class="container">
@@ -105,15 +114,15 @@
             stroke-opacity="1" stroke="#8BC34A" fill="#4CAF50"
             fill-opacity="1" stroke-width="2" stroke-linejoin="round"/>                -->
 
-        <path d="M-5 105 L0 10 L 18 10 L 46 40 L 74 20 L 102 15 L 130 45 L 158 50 L 186 20 L 205 20 L 205 105"/>
+        <path d$="[[path]]"/>
 
-        <!--<circle cx="18" cy="98" r="2" fill="red"/>
-        <circle cx="46" cy="98" r="2" fill="red"/>
-        <circle cx="74" cy="98" r="2" fill="red"/>
-        <circle cx="102" cy="98" r="2" fill="red"/>
-        <circle cx="130" cy="98" r="2" fill="red"/>
-        <circle cx="158" cy="98" r="2" fill="red"/>
-        <circle cx="186" cy="98" r="2" fill="red"/>-->
+        <circle cx="18" cy="10"/>
+        <circle cx="46" cy="40"/>
+        <circle cx="74" cy="76"/>
+        <circle cx="102" cy="35"/>
+        <circle cx="130" cy="45"/>
+        <circle cx="158" cy="50"/>
+        <circle cx="186" cy="20"/>
         
       </svg>
 
@@ -150,6 +159,10 @@
             { time: '09:43', date: 'Sa 08', marker: 'border-left-width: 10px' },
             { time: '09:11', date: 'Su 09', marker: 'border-left-width: 10px' },
           ]
+        },
+        path: {
+          type: String,
+          value: "M-5 105 L0 10 L 18 10 L 46 40 L 74 76 L 102 35 L 130 45 L 158 50 L 186 20 L 205 20 L 205 105"
         }
       }
 
