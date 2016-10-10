@@ -16,11 +16,11 @@
       :host {
         display: block;
         --primary-color: var(--paper-light-blue-400);
-        --primary-color-light: var(--paper-light-blue-200);
+        --primary-color-light: var(--paper-light-blue-300);
         --primary-color-dark: var(--paper-light-blue-600);
         --accent-color: var(--paper-amber-300);
 
-        background: linear-gradient(var(--primary-color-light), var(--primary-color-dark) 40%) 
+        background: linear-gradient(var(--primary-color-light), var(--primary-color-dark) 45%) 
       }
 
       paper-button {
@@ -53,15 +53,15 @@
 
     <div class="layout vertical center more">
       
-      <div class="time" hidden$="[[todaysTime]]">
+      <!--<div class="time" hidden$="[[todaysTime]]">
         [[time]]
       </div>
       <div class="time" hidden$="[[!todaysTime]]">
         [[todaysTime]]
-      </div>
+      </div>-->
       
       <!--<sib-days list="[[list]]" on-track="track"></sib-days>-->
-      <paper-button>More stats..</paper-button>
+      <!--<paper-button>More stats..</paper-button>-->
       
       <div style="height: 400px"></div>
     </div>
