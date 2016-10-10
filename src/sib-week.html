@@ -20,25 +20,26 @@
       }
 
       .container {
-        @apply(--layout-vertical);
+        @apply(--layout-horizontal);
         @apply(--layout-center);
         @apply(--layout-center-justified);
         @apply(--layout-wrap);
-        width: 300px;
+        width: 100%;
         /*border: solid 1px;*/
       }
 
       .tile {
-        @apply(--layout-horizontal);
+        @apply(--layout-vertical);
         @apply(--layout-center);
+        @apply(--layout-end-justified);
         /*@apply(--layout-center-justified);*/
 
         border-radius: 8px;
         /*border: 1px solid;*/
         /*background: rgba(200, 255, 200, 0.15);*/
 
-        width: 100%;
-        height: 16px;
+        width: 14%;
+        height: 100px;
         margin: 3px;
       }
 
@@ -47,9 +48,6 @@
       }
 
       .time {
-        display: block;
-        width: 50px;
-
         @apply(--paper-font-common-base);
         font-size: 18px;
         font-weight: 300;
@@ -58,22 +56,19 @@
       }
 
       .date {
-        display: block;
-        width: 60px;
-
         @apply(--paper-font-common-base);
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 300;
         /*text-transform: uppercase;*/
         /*width: 100%;*/
-        text-align: right;
-        padding-right: 10px;
+        text-align: center;
+        /*padding-right: 10px;*/
         opacity: 0.7;
         /*border-bottom: solid 1px;*/
       }
 
       .marker {
-        display: block;
+        display: none;
         border-left-style: solid;
         border-left-width: 0;
         margin-left: 20px;
@@ -92,8 +87,8 @@
 
       <template is="dom-repeat" items="[[items]]">
         <div class$="tile [[item.klass]]">
-          <span class="date">[[item.date]]</span>
           <span class="time">[[item.time]]</span>
+          <span class="date">[[item.date]]</span>
           <span class="marker" style$="[[item.marker]]">&nbsp</span>
         </div>
       </template>
@@ -115,12 +110,12 @@
       properties: {
         items: {
           value: [
-            { time: '07:20', date: 'Mon 03', marker: 'border-left-width: 20px' },
-            { time: '08:05', date: 'Tue 04', marker: 'border-left-width: 120px' },
-            { time: '     ', date: 'Wed 05' },
-            { time: '07:22', date: 'Thu 06', marker: 'border-left-width: 41px' },
-            { time: '07:20', date: 'Fri 07', marker: 'border-left-width: 100px' },
-            { time: '09:43', date: 'Sat 08', marker: 'border-left-width: 10px' },
+            { time: '07:20', date: 'M 03', marker: 'border-left-width: 20px' },
+            { time: '08:05', date: 'T 04', marker: 'border-left-width: 120px' },
+            { time: '  -  ', date: 'W 05' },
+            { time: '07:22', date: 'T 06', marker: 'border-left-width: 41px' },
+            { time: '07:20', date: 'F 07', marker: 'border-left-width: 100px' },
+            { time: '09:43', date: 'S 08', marker: 'border-left-width: 10px' },
           ]
         }
       }
