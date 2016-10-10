@@ -7,7 +7,7 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="sib-sky.html">
-<link rel="import" href="sib-days.html">
+<link rel="import" href="sib-panel.html">
 <link rel="import" href="sib-week.html">
 
 <dom-module id="sib-app">
@@ -36,6 +36,7 @@
       key="sib-prod" data="{{list}}">
     </app-localstorage-document>
 
+    <sib-panel></sib-panel>
 
     <sib-week list="[[list]]"></sib-week>
 
