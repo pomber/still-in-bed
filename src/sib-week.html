@@ -200,7 +200,7 @@
         coords.forEach(function (c) {
           if (c.y) {
             ymin = Math.min(c.y, ymin);
-            ymax = Math.max(c.y, ymax);
+            ymax = Math.max(c.y + 1, ymax);
           }
         });
 
