@@ -2,14 +2,8 @@
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="sib-icons.html">
-<link rel="import" href="sib-day-tile.html">
-<link rel="import" href="sib-today-tile.html">
-<link rel="import" href="sib-sparkline.html">
 
-<dom-module id="sib-week">
+<dom-module id="sib-sparkline">
   <template>
     <style include="iron-flex iron-flex-alignment">
       :host {
@@ -25,9 +19,7 @@
         @apply(--layout-horizontal);
         @apply(--layout-center);
         @apply(--layout-center-justified);
-        @apply(--layout-wrap);
         width: 100%;
-        /*border: solid 1px;*/
         background-color: var(--primary-color);
         padding-bottom: 20px;
       }
@@ -109,15 +101,26 @@
         text-anchor: middle;
       }
     </style>
-    
-    <sib-sparkline coords="[[coords]]"></sib-sparkline>
+
+    <svg id="svg"
+      xmlns="http://www.w3.org/2000/svg" version="1.1" 
+      viewBox="0 0 200 100">        
+    </svg>
+
+    <div class="container">
+      <template is="dom-repeat" items="[[coords]]">
+        <div class="tile">
+          <span class="date">[[item.l]]</span>
+        </div>
+      </template>        
+    </div>
 
   </template>
 
   <script>
     Polymer({
 
-      is: 'sib-week',
+      is: 'sib-sparkline',
 
       properties: {
         coords: {
@@ -134,57 +137,70 @@
       },
 
       observers: [
-        '_compute(list.*)'
+        '_render(coords.*)'
       ],
+      
+      _render: function() {
+        var svg = Polymer.dom(this.$.svg);
 
-      _compute: function() {
-        if (!this.coords || !this.coords.length) return;
+        while (svg.firstChild) {
+          svg.removeChild(svg.firstChild);
+        }
 
-        var days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-        var coords = [];
-        var today = new Date();
-        for(var i = -6; i <= 0; i++) {
-          var day = new Date(today);
-          day.setDate(today.getDate() + i);
-          var info = {
-            x: this.coords[i+6].x,
-            y: this._getY(day),
-            l: days[day.getDay()]
-          };
-          coords.push(info);
-        }       
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', this._getPath());
+        svg.appendChild(path);        
 
-        var ymin = 9999;
-        var ymax = 0;
-        coords.forEach(function (c) {
-          if (c.y) {
-            ymin = Math.min(c.y, ymin);
-            ymax = Math.max(c.y + 1, ymax);
-          }
-        });
+        for (i = 0; i < this.coords.length; i++) {
+          if (!this.coords[i].y) continue;
 
-        coords.forEach(function (c) {
-          if (c.y) {
-            var h = (c.y - ymin) / (ymax - ymin);
-            c.y = 90 - h * 80;  
-          }
-        });
+          var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', this.coords[i].x);
+          circle.setAttribute('cy', this.coords[i].y);
+          svg.appendChild(circle);
 
-        this.set('coords', coords);
+          // if (i % 3 <= 3) {
+          //   var txtNode = document.createTextNode(this.coords[i].l);
+          //   var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          //   text.setAttribute('x', this.coords[i].x);
+          //   text.setAttribute('y', this.coords[i].y);
+          //   text.setAttribute('dy', 13);
+          //   text.appendChild(txtNode);  
+          //   svg.appendChild(text);
+          // }
+        }
       },
 
-      _getY: function(date) {
-        var item = this.list.find(function(item) {
-          var itemDate = new Date(item.time);
-          return itemDate.toDateString() == date.toDateString();
-        });
+      _getPath: function() {
+        if (!this.coords || !this.coords.length) return '';
 
-        if (!item) return null;
+        var y0 = this.coords[0].y;
+        var i = 0;
+        while(!y0 && i < this.coords.length) {
+          y0 = this.coords[i++].y;
+        }
 
-        var d = item && new Date(item.time);
-        var mins = d.getHours() * 60 + d.getMinutes();
-        return mins;
-      },     
+        if (!y0) return ''; 
+
+        var path = 'M-5 ' + y0;
+        var prev = {x: -5, y: y0};
+
+        for (var i = 0; i < this.coords.length; i++) {
+          var c = this.coords[i];
+          if (!c.y) continue;
+
+          path += ' C'
+            + (prev.x + c.x) / 2 + ' ' + prev.y + ' '
+            + (prev.x + c.x) / 2 + ' ' + c.y + ' ' 
+            + c.x + ' ' + c.y;
+
+          prev = c;
+        }
+
+        path += ' h100 v500 h-500';
+        console.log(path);
+        return path;
+      }
 
     });
   </script>
