@@ -93,17 +93,7 @@
       is: 'sib-sparkline',
 
       properties: {
-        coords: {
-          value: [
-            { x:  16, y: 30, l: 'M' },
-            { x:  44, y: 40, l: 'T' },
-            { x:  72, y: 76, l: 'W' },
-            { x: 100, y: 35, l: 'T' },
-            { x: 128, y: 90, l: 'F' },
-            { x: 156, y: 50, l: 'S' },
-            { x: 184, y: 10, l: 'S' },
-          ]
-        }
+        coords: Array
       },
 
       observers: [
@@ -116,15 +106,26 @@
         while (svg.firstChild) {
           svg.removeChild(svg.firstChild);
         }
+     
+        this._renderPath(svg);
+        this._renderCircles(svg);
+      },
 
-        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      _createElement: function(name) {
+          return document.createElementNS('http://www.w3.org/2000/svg', name);
+      },
+
+      _renderPath: function(svg) {
+        var path = this._createElement('path');
         path.setAttribute('d', this._getPath());
-        svg.appendChild(path);        
+        svg.appendChild(path);
+      },
 
+      _renderCircles: function(svg) {
         for (i = 0; i < this.coords.length; i++) {
           if (!this.coords[i].y) continue;
 
-          var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          var circle = this._createElement('circle');
           circle.setAttribute('cx', this.coords[i].x);
           circle.setAttribute('cy', this.coords[i].y);
           svg.appendChild(circle);
