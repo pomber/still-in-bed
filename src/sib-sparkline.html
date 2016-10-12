@@ -15,62 +15,34 @@
         @apply(--layout-center);
       }
 
-      .container {
+      .axis {
         @apply(--layout-horizontal);
-        @apply(--layout-center);
         @apply(--layout-center-justified);
+        @apply(--layout-center);
         width: 100%;
         background-color: var(--primary-color);
         padding-bottom: 20px;
       }
 
-      .tile {
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-end-justified);
-        /*@apply(--layout-center-justified);*/
-
-        border-radius: 8px;
-        /*border: 1px solid;*/
-        /*background: rgba(200, 255, 200, 0.15);*/
-
-        width: 14%;
-        height: 40px;
-      }
-
-      .tile.miss {
-        /*background: rgba(255, 100, 100, 0.15);*/
-      }
-
-      /*.time {
-        @apply(--paper-font-common-base);
-        font-size: 17px;
-        font-weight: 300;
-        text-align: center;
-      }*/
-
-      .date {
+      .label {
         @apply(--paper-font-common-base);
         font-size: 16px;
         font-weight: 400;
-        /*text-transform: uppercase;*/
-        /*width: 100%;*/
-        text-align: center;
-        /*padding-right: 10px;*/
         opacity: 0.8;
-        /*border-bottom: solid 1px;*/
+        width: 14%;
+        height: 40px;
+        text-align: center;
       }
 
-      .tile.today {
-        width: 286px;
-        height: 60px;
+      .date {
+        text-align: center;
+        opacity: 0.8;
       }
 
       svg {
         width: 100vw;
         height: 50vw;
         display: block;
-        /*background-color: var(--paper-light-blue-300);*/
       }
 
       svg path {
@@ -90,7 +62,7 @@
         stroke-opacity: 0.3;
       }
 
-      svg text {
+      /*svg text {
         @apply(--paper-font-common-base);
         font-size: 9px;
         font-weight: 200;
@@ -99,7 +71,7 @@
         fill: white;
         fill-opacity: 0.2;
         text-anchor: middle;
-      }
+      }*/
     </style>
 
     <svg id="svg"
@@ -107,11 +79,9 @@
       viewBox="0 0 200 100">        
     </svg>
 
-    <div class="container">
+    <div class="axis">
       <template is="dom-repeat" items="[[coords]]">
-        <div class="tile">
-          <span class="date">[[item.l]]</span>
-        </div>
+        <span class="label">[[item.l]]</span>
       </template>        
     </div>
 
@@ -125,13 +95,13 @@
       properties: {
         coords: {
           value: [
-            { x:  18, y: 30, l: 'M' },
-            { x:  46, y: 40, l: 'T' },
-            { x:  74, y: 76, l: 'W' },
-            { x: 102, y: 35, l: 'T' },
-            { x: 130, y: 90, l: 'F' },
-            { x: 158, y: 50, l: 'S' },
-            { x: 186, y: 10, l: 'S' },
+            { x:  16, y: 30, l: 'M' },
+            { x:  44, y: 40, l: 'T' },
+            { x:  72, y: 76, l: 'W' },
+            { x: 100, y: 35, l: 'T' },
+            { x: 128, y: 90, l: 'F' },
+            { x: 156, y: 50, l: 'S' },
+            { x: 184, y: 10, l: 'S' },
           ]
         }
       },
@@ -139,7 +109,7 @@
       observers: [
         '_render(coords.*)'
       ],
-      
+
       _render: function() {
         var svg = Polymer.dom(this.$.svg);
 
