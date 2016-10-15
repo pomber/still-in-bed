@@ -63,9 +63,19 @@
       }
 
       svg line {
-        stroke: white;
+        stroke: url(#grad);
         stroke-width: 1;
         stroke-opacity: 0.5;
+      }
+
+      stop.start {
+        stop-opacity: 0;  
+        stop-color: white;
+      }
+
+      stop.end {
+        stop-opacity: 0.9;  
+        stop-color: white;
       }
 
       /*svg text {
@@ -83,6 +93,12 @@
     <svg id="svg"
       xmlns="http://www.w3.org/2000/svg" version="1.1" 
       viewBox="0 0 200 100" on-tap="tap">
+      <defs>
+        <linearGradient id="grad" gradientUnits="userSpaceOnUse">
+          <stop class="start" offset="50%"/>
+          <stop class="end" offset="100%"/>
+        </linearGradient>
+      </defs>
 
       <path d$="[[getPath(coords.*)]]"></path>
 
@@ -94,7 +110,9 @@
       <circle cx$="[[c(coords.*, 5, 'x')]]" cy$="[[c(coords.*, 5, 'y')]]"></circle>
       <circle cx$="[[c(coords.*, 6, 'x')]]" cy$="[[c(coords.*, 6, 'y')]]"></circle>
 
-      <line x1="-5" x2="205" y1="5" y2="5"></line>
+      <line x1="-5" x2="205" y1="3" y2="3"></line>
+      <line x1="-5" x2="205" y1="98" y2="98"></line>
+      <!--<text x="5" y="205">10:20</text>-->
     </svg>
 
     <div class="axis">      
