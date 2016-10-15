@@ -82,13 +82,25 @@
 
     <svg id="svg"
       xmlns="http://www.w3.org/2000/svg" version="1.1" 
-      viewBox="0 0 200 100">        
+      viewBox="0 0 200 100" on-tap="tap">
+
+      <path d$="[[getPath(coords.*)]]"></path>
+
+      <circle cx$="[[c(coords.*, 0, 'x')]]" cy$="[[c(coords.*, 0, 'y')]]"></circle>
+      <circle cx$="[[c(coords.*, 1, 'x')]]" cy$="[[c(coords.*, 1, 'y')]]"></circle>
+      <circle cx$="[[c(coords.*, 2, 'x')]]" cy$="[[c(coords.*, 2, 'y')]]"></circle>      
+      <circle cx$="[[c(coords.*, 3, 'x')]]" cy$="[[c(coords.*, 3, 'y')]]"></circle>
+      <circle cx$="[[c(coords.*, 4, 'x')]]" cy$="[[c(coords.*, 4, 'y')]]"></circle>
+      <circle cx$="[[c(coords.*, 5, 'x')]]" cy$="[[c(coords.*, 5, 'y')]]"></circle>
+      <circle cx$="[[c(coords.*, 6, 'x')]]" cy$="[[c(coords.*, 6, 'y')]]"></circle>
+
+      <line x1="-5" x2="205" y1="5" y2="5"></line>
     </svg>
 
-    <div class="axis">
+    <div class="axis">      
       <template is="dom-repeat" items="[[coords]]">
         <span class="label">[[item.l]]</span>
-      </template>        
+      </template>              
     </div>
 
   </template>
@@ -99,66 +111,26 @@
       is: 'sib-sparkline',
 
       properties: {
-        coords: Array
+        coords: Array,
       },
 
-      observers: [
-        '_render(coords.*)'
-      ],
+      //observers: [
+      //  '_render(coords.*)'
+      //],
 
-      _render: function() {
-        var svg = Polymer.dom(this.$.svg);
-
-        while (svg.firstChild) {
-          svg.removeChild(svg.firstChild);
-        }
-     
-        this._renderPath(svg);
-        this._renderCircles(svg);
-        this._renderLines(svg);
+      tap: function() {
+        this.set('cs.1.y', this.cs[1].y + 10);
+        console.log(this.cs[1].y);
+      },
+      
+      c: function(change, index, path) {
+        console.log('c');
+        var v = this.get(path, change.base[index]);
+        if (v || v === 0) return v;
+        return -10;
       },
 
-      _createElement: function(name) {
-          return document.createElementNS('http://www.w3.org/2000/svg', name);
-      },
-
-      _renderPath: function(svg) {
-        var path = this._createElement('path');
-        path.setAttribute('d', this._getPath());
-        svg.appendChild(path);
-      },
-
-      _renderCircles: function(svg) {
-        for (i = 0; i < this.coords.length; i++) {
-          if (!this.coords[i].y) continue;
-
-          var circle = this._createElement('circle');
-          circle.setAttribute('cx', this.coords[i].x);
-          circle.setAttribute('cy', this.coords[i].y);
-          svg.appendChild(circle);
-
-          // if (i % 3 <= 3) {
-          //   var txtNode = document.createTextNode(this.coords[i].l);
-          //   var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          //   text.setAttribute('x', this.coords[i].x);
-          //   text.setAttribute('y', this.coords[i].y);
-          //   text.setAttribute('dy', 13);
-          //   text.appendChild(txtNode);  
-          //   svg.appendChild(text);
-          // }
-        }
-      },
-
-      _renderLines: function(svg) {
-          var line = this._createElement('line');
-          line.setAttribute('x1', 0);
-          line.setAttribute('x2', 200);
-          line.setAttribute('y1', 5);
-          line.setAttribute('y2', 5);
-          svg.appendChild(line);
-      },
-
-      _getPath: function() {
+      getPath: function() {
         if (!this.coords || !this.coords.length) return '';
 
         var y0 = this.coords[0].y;
