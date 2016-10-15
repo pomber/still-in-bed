@@ -6,7 +6,7 @@
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="sib-sky.html">
+<link rel="import" href="sib-app-state.html">
 <link rel="import" href="sib-panel.html">
 <link rel="import" href="sib-week.html">
 
@@ -32,9 +32,8 @@
       }
     </style>
 
-    <app-localstorage-document
-      key="sib-prod" data="{{list}}">
-    </app-localstorage-document>
+    <sib-app-state list="{{list}}" mode="just-one">
+    </sib-app-state>
 
     <sib-panel on-track="track" up="[[todaysTime]]"></sib-panel>
 
@@ -57,11 +56,11 @@
         today: Object,
         listFake: {
           value: [
-            {"time":"2016-10-05T07:14:14.302Z"},
-            {"time":"2016-10-07T08:04:14.302Z"},
-            {"time":"2016-10-08T07:26:14.302Z"},
-            {"time":"2016-10-09T06:47:14.302Z"},
-            {"time":"2016-10-10T09:10:14.302Z"},
+            {"time":"2016-10-08T07:14:14.302Z"},
+            {"time":"2016-10-09T08:04:14.302Z"},
+            {"time":"2016-10-11T07:26:14.302Z"},
+            {"time":"2016-10-12T06:47:14.302Z"},
+            {"time":"2016-10-14T09:10:14.302Z"},
           ]
         } 
       },

@@ -1,0 +1,68 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+
+<dom-module id="sib-app-state">
+  <template>
+
+    <app-localstorage-document
+      id="storage" key="sib-prod" data="{{list}}">
+    </app-localstorage-document>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-app-state',
+
+      properties: {
+
+        /**
+         * Options 
+         * `default` use local storage
+         * `first-time` mock empty list
+         * `just-one` mock list with one day 
+         * `bed` mock list excluding today
+         * `up` mock list including today
+         */
+        mode: {
+          type: String,          
+          value: ""
+        },
+        
+        list: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+      },
+
+      ready: function() {
+        if (!this.mode) return;
+        this.$.storage.remove();
+        this.list = this.getMockList();
+      },     
+
+      getMockList: function() {
+        switch (this.mode) {
+          case 'first-time': return [];
+          case 'just-one': return this.lists['just-one'];
+          case 'bed': return [];
+          case 'up': return [];
+        }
+        console.error('Invalid sib-app-state mode ', this.mode);        
+      },
+
+      lists: {
+        'just-one': [
+          {"time":"2016-10-08T07:14:14.302Z"},
+          {"time":"2016-10-09T08:04:14.302Z"},
+          {"time":"2016-10-11T07:26:14.302Z"},
+          {"time":"2016-10-12T06:47:14.302Z"},
+          {"time":"2016-10-14T09:10:14.302Z"},
+        ]
+      },
+
+    });
+  </script>
+</dom-module>
