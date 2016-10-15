@@ -61,7 +61,7 @@
 
     <sib-timer on-tick="tick" time="{{now}}" date="{{date}}"></sib-timer>
 
-    <div class="circle" on-tap="track">
+    <div class="circle" on-tap="log">
       <div class="beat"></div>
       <span class="text">I'm up!</span>
       <span class="time">[[time]]</span>
@@ -120,9 +120,9 @@
         return up || now;
       },
 
-      track: function(e) {
+      log: function(e) {
         if (!this.up) {
-          this.fire('track', this.date);
+          this.fire('log', this.date);
         }        
       }
 
