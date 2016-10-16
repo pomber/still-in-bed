@@ -63,9 +63,10 @@
       }
 
       svg line {
-        stroke: url(#grad);
+        --stroke: url(#grad);
+        stroke: white;
         stroke-width: 1;
-        stroke-opacity: 0.5;
+        stroke-opacity: 0.7;
       }
 
       stop.start {
@@ -83,8 +84,12 @@
         font-size: 8px;
         font-weight: 400;
         fill: white;
-        fill-opacity: 0.7;
-        text-anchor: end;
+        fill-opacity: 0.8;
+        text-anchor: start;
+      }
+
+      svg text.mute {
+        fill-opacity: 0.5;
       }
     </style>
 
@@ -108,10 +113,14 @@
       <circle cx$="[[c(coords.*, 5, 'x')]]" cy$="[[c(coords.*, 5, 'y')]]"></circle>
       <circle cx$="[[c(coords.*, 6, 'x')]]" cy$="[[c(coords.*, 6, 'y')]]"></circle>
 
-      <line x1="-5" x2="205" y1="9" y2="9"></line>
-      <line x1="-5" x2="205" y1="91" y2="91"></line>
-      <text x="197" y="7">08:55</text>
-      <text x="197" y="100">07:10</text>
+      <!--<line x1="-5" x2="205" y1="9" y2="9"></line>
+      -->
+      <text x$="[[xmax(coords.*)]]" y$="[[ymax(coords.*)]]" dy="-9">08:55</text>
+      <text x$="[[xmin(coords.*)]]" y$="[[ymin(coords.*)]]" dy="-30">07:10</text>
+      <line x1="72" x2="72" y1="84" y2="31"></line>
+      <!--<line x1="72" x2="82" y1="60" y2="60"></line>-->
+      <text x="74" y="37" dy="0">07:10</text>
+      <text x="74" y="45" dy="0" class="mute">wed</text>
     </svg>
 
     <div class="axis">      
@@ -145,6 +154,22 @@
         var v = this.get(path, change.base[index]);
         if (v || v === 0) return v;
         return -10;
+      },
+
+      xmax: function() {
+        return this.coords[5].x;
+      },
+
+      ymax: function() {
+        return this.coords[5].y;
+      },
+
+      xmin: function() {
+        return this.coords[3].x;
+      },
+
+      ymin: function() {
+        return this.coords[3].y;
       },
 
       getPath: function() {
