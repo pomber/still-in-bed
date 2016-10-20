@@ -1,0 +1,208 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="sib-sparkline">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        color: white;
+        display: block;
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-center);
+      }
+
+      .axis {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-center);
+        width: 100%;
+        background-color: var(--primary-color);
+        padding: 10px 0;
+      }
+
+      .label {
+        @apply(--paper-font-common-base);
+        font-size: 16px;
+        font-weight: 400;
+        opacity: 0.8;
+        width: 14%;
+        height: 20px;
+        text-align: center;
+      }
+
+      .date {
+        text-align: center;
+        opacity: 0.8;
+      }
+
+      svg {
+        width: 100vw;
+        height: 50vw;
+        display: block;
+      }
+
+      svg path {
+        stroke-opacity: 0.7;
+        stroke: white;
+        fill: var(--primary-color);
+        stroke-width: 2;
+        stroke-linejoin: round;
+      }
+
+      svg circle {
+        r: 2;
+        fill: white;
+        fill-opacity: 0.7;
+        stroke: white;
+        stroke-width: 5;
+        stroke-opacity: 0.3;
+      }
+
+      svg line {
+        --stroke: url(#grad);
+        stroke: white;
+        stroke-width: 1;
+        stroke-opacity: 0.7;
+      }
+
+      stop.start {
+        stop-opacity: 0;  
+        stop-color: white;
+      }
+
+      stop.end {
+        stop-opacity: 0.9;  
+        stop-color: white;
+      }
+
+      svg text {
+        @apply(--paper-font-common-base);
+        font-size: 8px;
+        font-weight: 400;
+        fill: white;
+        fill-opacity: 0.8;
+        text-anchor: start;
+      }
+
+      svg text.mute {
+        fill-opacity: 0.5;
+      }
+    </style>
+
+    <svg id="svg"
+      xmlns="http://www.w3.org/2000/svg" version="1.1" 
+      viewBox="0 0 200 100" on-tap="tap">
+      <defs>
+        <linearGradient id="grad" gradientUnits="userSpaceOnUse">
+          <stop class="start" offset="50%"/>
+          <stop class="end" offset="100%"/>
+        </linearGradient>
+      </defs>
+
+      <path d="M-5 71.875 C19.5 71.875 19.5 71.875 44 71.875 C58 71.875 58 47.56944444444444 72 47.56944444444444 C100 47.56944444444444 100 66.04166666666667 128 66.04166666666667 C142 66.04166666666667 142 85 156 85 C170 85 170 15.486111111111114 184 15.486111111111114 h100 v500 h-500"></path>
+      
+      <circle cy="-9" cx="16" ></circle>
+      <circle cy="71" cx="44"></circle>
+      <circle cy="47" cx="72"></circle>      
+      <circle cy="-9" cx="100"></circle>
+      <circle cy="66" cx="128"></circle>
+      <circle cy="85" cx="156"></circle>
+      <circle cy="15" cx="184"></circle>
+
+      <!--<line x1="-5" x2="205" y1="9" y2="9"></line>
+      -->
+      <text x$="[[xmax(coords.*)]]" y$="[[ymax(coords.*)]]" dy="-9">08:55</text>
+      <text x$="[[xmin(coords.*)]]" y$="[[ymin(coords.*)]]" dy="-30">07:10</text>
+      <line x1="72" x2="72" y1="84" y2="31"></line>
+      <!--<line x1="72" x2="82" y1="60" y2="60"></line>-->
+      <text x="74" y="37" dy="0">07:10</text>
+      <text x="74" y="45" dy="0" class="mute">wed</text>
+    </svg>
+
+    <div class="axis">      
+      <template is="dom-repeat" items="[[coords]]">
+        <span class="label">[[item.l]]</span>
+      </template>              
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'sib-sparkline',
+
+      properties: {
+        coords: Array,
+      },
+
+      //observers: [
+      //  '_render(coords.*)'
+      //],
+
+      tap: function() {
+        this.set('cs.1.y', this.cs[1].y + 10);
+        console.log(this.cs[1].y);
+      },
+      
+      c: function(change, index, path) {
+        console.log('c');
+        var v = this.get(path, change.base[index]);
+        if (v || v === 0) return v;
+        return -10;
+      },
+
+      xmax: function() {
+        return this.coords[5].x;
+      },
+
+      ymax: function() {
+        return this.coords[5].y;
+      },
+
+      xmin: function() {
+        return this.coords[3].x;
+      },
+
+      ymin: function() {
+        return this.coords[3].y;
+      },
+
+      getPath: function() {
+        if (!this.coords || !this.coords.length) return '';
+
+        var y0 = this.coords[0].y;
+        var i = 0;
+        while(!y0 && i < this.coords.length) {
+          y0 = this.coords[i++].y;
+        }
+
+        if (!y0) return ''; 
+
+        var path = 'M-5 ' + y0;
+        var prev = {x: -5, y: y0};
+
+        for (var i = 0; i < this.coords.length; i++) {
+          var c = this.coords[i];
+          if (!c.y) continue;
+
+          path += ' C'
+            + (prev.x + c.x) / 2 + ' ' + prev.y + ' '
+            + (prev.x + c.x) / 2 + ' ' + c.y + ' ' 
+            + c.x + ' ' + c.y;
+
+          prev = c;
+        }
+
+        path += ' h100 v500 h-500';
+        console.log(path);
+        return path;
+      }
+
+    });
+  </script>
+</dom-module>
