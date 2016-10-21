@@ -103,24 +103,24 @@
         </linearGradient>
       </defs>
 
-      <path d="M-5 71.875 C19.5 71.875 19.5 71.875 44 71.875 C58 71.875 58 47.56944444444444 72 47.56944444444444 C100 47.56944444444444 100 66.04166666666667 128 66.04166666666667 C142 66.04166666666667 142 85 156 85 C170 85 170 15.486111111111114 184 15.486111111111114 h100 v500 h-500"></path>
-      
-      <circle cy="-9" cx="16" ></circle>
-      <circle cy="71" cx="44"></circle>
-      <circle cy="47" cx="72"></circle>      
-      <circle cy="-9" cx="100"></circle>
-      <circle cy="66" cx="128"></circle>
-      <circle cy="85" cx="156"></circle>
-      <circle cy="15" cx="184"></circle>
+      <path d="M-5 -20 C1.5 -20 1.5 -20 8 -20 C15 -20 15 -40 22 -40 C29 -40 29 -15 36 -15 C43 -15 43 -50 50 -50 C57 -50 57 -85 64 -85 C71 -85 71 -60 78 -60 C85 -60 85 -50 92 -50 h100 v500 h-500"></path>
+      <circle cx="8" cy="-20"></circle>
+      <circle cx="22" cy="-40"></circle>
+      <circle cx="36" cy="-15"></circle>
+      <circle cx="50" cy="-50"></circle>
+      <circle cx="64" cy="-85"></circle>
+      <circle cx="78" cy="-60"></circle>
+      <circle cx="92" cy="-50"></circle>
 
-      <!--<line x1="-5" x2="205" y1="9" y2="9"></line>
-      -->
-      <text x$="[[xmax(coords.*)]]" y$="[[ymax(coords.*)]]" dy="-9">08:55</text>
-      <text x$="[[xmin(coords.*)]]" y$="[[ymin(coords.*)]]" dy="-30">07:10</text>
       <line x1="72" x2="72" y1="84" y2="31"></line>
-      <!--<line x1="72" x2="82" y1="60" y2="60"></line>-->
       <text x="74" y="37" dy="0">07:10</text>
       <text x="74" y="45" dy="0" class="mute">wed</text>
+
+<!--      
+      <text x$="[[xmax(coords.*)]]" y$="[[ymax(coords.*)]]" dy="-9">08:55</text>
+      <text x$="[[xmin(coords.*)]]" y$="[[ymin(coords.*)]]" dy="-30">07:10</text>
+      -->
+      <!--<line x1="72" x2="82" y1="60" y2="60"></line>-->
     </svg>
 
     <div class="axis">      
@@ -136,49 +136,43 @@
 
       is: 'sib-sparkline',
 
-      properties: {
-        coords: Array,
+      ready: function() {
+        var cs = [
+          { x:  8, y: -20 },
+          { x: 22, y: -40 },
+          { x: 36, y: -15 },
+          { x: 50, y: -50 },
+          { x: 64, y: -85 },
+          { x: 78, y: -60 },
+          { x: 92, y: -50 },
+        ];
+
+        console.groupCollapsed("SVG");
+        var output = "";
+        
+        var d = this.getPath(cs);
+        var p = "<path d=\"" + d + "\"></path>";
+        
+        console.log(p);
+        output += p + "\n";
+
+        cs.forEach(function (c) {
+          var e = "<circle cx=\"" 
+            + c.x + "\" cy=\""+ c.y 
+            + "\"></circle>";
+          console.log(e);
+          output += e + "\n";
+        });   
+
+        console.groupEnd();
+        console.log(output);
       },
 
-      //observers: [
-      //  '_render(coords.*)'
-      //],
-
-      tap: function() {
-        this.set('cs.1.y', this.cs[1].y + 10);
-        console.log(this.cs[1].y);
-      },
-      
-      c: function(change, index, path) {
-        console.log('c');
-        var v = this.get(path, change.base[index]);
-        if (v || v === 0) return v;
-        return -10;
-      },
-
-      xmax: function() {
-        return this.coords[5].x;
-      },
-
-      ymax: function() {
-        return this.coords[5].y;
-      },
-
-      xmin: function() {
-        return this.coords[3].x;
-      },
-
-      ymin: function() {
-        return this.coords[3].y;
-      },
-
-      getPath: function() {
-        if (!this.coords || !this.coords.length) return '';
-
-        var y0 = this.coords[0].y;
+      getPath: function(cs) {
+        var y0 = cs[0].y;
         var i = 0;
-        while(!y0 && i < this.coords.length) {
-          y0 = this.coords[i++].y;
+        while(!y0 && i < cs.length) {
+          y0 = cs[i++].y;
         }
 
         if (!y0) return ''; 
@@ -186,8 +180,8 @@
         var path = 'M-5 ' + y0;
         var prev = {x: -5, y: y0};
 
-        for (var i = 0; i < this.coords.length; i++) {
-          var c = this.coords[i];
+        for (var i = 0; i < cs.length; i++) {
+          var c = cs[i];
           if (!c.y) continue;
 
           path += ' C'
@@ -199,7 +193,7 @@
         }
 
         path += ' h100 v500 h-500';
-        console.log(path);
+        //console.log(path);
         return path;
       }
 
