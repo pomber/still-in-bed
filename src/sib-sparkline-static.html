@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="sib-today.html">
 
 <dom-module id="sib-sparkline">
   <template>
@@ -112,12 +113,9 @@
         font-weight: 300;
       }
 
-      paper-button {
+      sib-today {
         position:fixed; 
-        top: 150px; 
-        background: rgba(255,255,255, 0.8); 
-        width: 70vw; 
-        color: var(--primary-color);
+        top: 5vh; 
       }
 
     </style>
@@ -149,16 +147,13 @@
       <text x$="[[xmax]]" y$="[[maxstarty]]" dx="1" dy="3">08:40</text>
       <text x$="[[xmax]]" y$="[[maxstarty]]" dx="1" dy="8" class="mute">fri</text>
 
-      <line x1$="[[xtoday]]" x2$="[[xtoday]]" y1$="[[ytoday]]" y2$="[[todstarty]]" class="today"></line>
+      <!--<line x1$="[[xtoday]]" x2$="[[xtoday]]" y1$="[[ytoday]]" y2$="[[todstarty]]" class="today"></line>
       <text x$="[[xtoday]]" y$="[[todstarty]]" dx="-1" dy="13" class="today">08:40:31</text>
-      <text x$="[[xtoday]]" y$="[[todstarty]]" dx="-1" dy="25" class="mute today">friday, 24 october</text>
+      <text x$="[[xtoday]]" y$="[[todstarty]]" dx="-1" dy="25" class="mute today">friday, 24 october</text>-->
 
     </svg>
 
-    <!--TODO Create a div with the content-->
-    <paper-button raised>
-      I'm up!
-    </paper-button>
+    <sib-today></sib-today>    
 
     <div class="axis">      
       <template is="dom-repeat" items="[[coords]]">
