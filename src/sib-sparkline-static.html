@@ -102,15 +102,15 @@
           <stop class="end" offset="100%"/>
         </linearGradient>
       </defs>
-
-      <path d="M-5 -20 C1.5 -20 1.5 -20 8 -20 C15 -20 15 -40 22 -40 C29 -40 29 -15 36 -15 C43 -15 43 -50 50 -50 C57 -50 57 -85 64 -85 C71 -85 71 -60 78 -60 C85 -60 85 -50 92 -50 h100 v500 h-500"></path>
-      <circle cx="8" cy="-20"></circle>
-      <circle cx="22" cy="-40"></circle>
-      <circle cx="36" cy="-15"></circle>
-      <circle cx="50" cy="-50"></circle>
-      <circle cx="64" cy="-85"></circle>
-      <circle cx="78" cy="-60"></circle>
-      <circle cx="92" cy="-50"></circle>
+      
+<path d="M-5 -22 C1.5 -22 1.5 -22 8 -22 C15 -22 15 -34 22 -34 C29 -34 29 -16 36 -16 C43 -16 43 -65.8 50 -65.8 C57 -65.8 57 -76 64 -76 C71 -76 71 -52 78 -52 C85 -52 85 -46 92 -46 h100 v500 h-500"></path>
+<circle cx="8" cy="-22"></circle>
+<circle cx="22" cy="-34"></circle>
+<circle cx="36" cy="-16"></circle>
+<circle cx="50" cy="-65.8"></circle>
+<circle cx="64" cy="-76"></circle>
+<circle cx="78" cy="-52"></circle>
+<circle cx="92" cy="-46"></circle>
 
       <line x1="36" x2="36" y1="-15" y2="-100"></line>
       <text x="36" y="-100" dx="1" dy="3">07:10</text>
@@ -142,14 +142,21 @@
 
       ready: function() {
         var cs = [
-          { x:  8, y: -20 },
-          { x: 22, y: -40 },
-          { x: 36, y: -15 },
-          { x: 50, y: -50 },
-          { x: 64, y: -85 },
-          { x: 78, y: -60 },
-          { x: 92, y: -50 },
+          { x:  8, y: 10 },
+          { x: 22, y: 30 },
+          { x: 36, y: 0 },
+          { x: 50, y: 83 },
+          { x: 64, y: 100 },
+          { x: 78, y: 60 },
+          { x: 92, y: 50 },
         ];
+
+        var b = 16;
+        var k = 60;
+
+        cs.forEach(function (c, i) {
+          c.y = -b - (k*c.y/100);
+        });
 
         console.groupCollapsed("SVG");
         var output = "";
