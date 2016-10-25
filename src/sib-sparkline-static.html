@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <dom-module id="sib-sparkline">
   <template>
@@ -145,6 +146,10 @@
 
     </svg>
 
+    <paper-button raised style="position:fixed; top: 150px;">
+      I'm up!
+    </paper-button>
+
     <div class="axis">      
       <template is="dom-repeat" items="[[coords]]">
         <span class="label">[[item.l]]</span>
@@ -161,13 +166,18 @@
       properties: {
         xs:      { value: [ 8, 22, 36, 50, 64, 78, 92]},        
         heights: { value: [10, 30,  0, 83, 99, 60, 50]},
-        minstarty: { value: -80 },
+        minstarty: { value: -90 },
         maxstarty: { value: -90 },
       },
 
       observers: [
         'calc(heights.*)'
       ],
+
+      minindex: 2,
+      maxindex: 4,
+      b: 20,
+      k: 45,
 
       calc: function () {
         var b = 20;
@@ -184,11 +194,11 @@
 
         self.path = self.getPath(self.cs);
 
-        self.xmin = self.cs[2].x;
-        self.ymin = self.cs[2].y;
+        self.xmin = self.cs[self.minindex].x;
+        self.ymin = self.cs[self.minindex].y;
 
-        self.xmax = self.cs[4].x;
-        self.ymax = self.cs[4].y;
+        self.xmax = self.cs[self.maxindex].x;
+        self.ymax = self.cs[self.maxindex].y;
 
         self.xtoday = self.cs[6].x;
         self.ytoday = self.cs[6].y;
