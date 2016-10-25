@@ -70,6 +70,12 @@
         stroke-opacity: 0.7;
       }
 
+      svg line.today {
+        stroke: white;
+        stroke-width: 0.7;
+        stroke-opacity: 0.8;
+      }
+
       stop.start {
         stop-opacity: 0;  
         stop-color: white;
@@ -92,6 +98,18 @@
       svg text.mute {
         fill-opacity: 0.5;
       }
+
+      svg text.today {
+        text-anchor: end;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      svg text.today.mute {
+        fill-opacity: 0.5;
+        font-size: 10px;
+        font-weight: 300;
+      }
     </style>
     <svg id="svg"
       xmlns="http://www.w3.org/2000/svg" version="1.1" 
@@ -113,13 +131,17 @@
       <circle cx$="[[c(cs.*, 5, 'x')]]" cy$="[[c(cs.*, 5, 'y')]]"></circle>
       <circle cx$="[[c(cs.*, 6, 'x')]]" cy$="[[c(cs.*, 6, 'y')]]"></circle>
 
-      <line x1$="[[xmin]]" x2$="[[xmin]]" y1$="[[ymin]]" y2="-100"></line>
-      <text x$="[[xmin]]" y="-100" dx="1" dy="3">07:10</text>
-      <text x$="[[xmin]]" y="-100" dx="1" dy="8" class="mute">wed</text>
+      <line x1$="[[xmin]]" x2$="[[xmin]]" y1$="[[ymin]]" y2$="[[minstarty]]"></line>
+      <text x$="[[xmin]]" y$="[[minstarty]]" dx="1" dy="3">07:10</text>
+      <text x$="[[xmin]]" y$="[[minstarty]]" dx="1" dy="8" class="mute">wed</text>
 
-      <line x1$="[[xmax]]" x2$="[[xmax]]" y1$="[[ymax]]" y2="-110"></line>
-      <text x$="[[xmax]]" y="-110" dx="1" dy="3">08:40</text>
-      <text x$="[[xmax]]" y="-110" dx="1" dy="8" class="mute">fri</text>
+      <line x1$="[[xmax]]" x2$="[[xmax]]" y1$="[[ymax]]" y2$="[[maxstarty]]"></line>
+      <text x$="[[xmax]]" y$="[[maxstarty]]" dx="1" dy="3">08:40</text>
+      <text x$="[[xmax]]" y$="[[maxstarty]]" dx="1" dy="8" class="mute">fri</text>
+
+      <line x1$="[[xtoday]]" x2$="[[xtoday]]" y1$="[[ytoday]]" y2="-160" class="today"></line>
+      <text x$="[[xtoday]]" y="-150" dx="-1" dy="3" class="today">08:40:31</text>
+      <text x$="[[xtoday]]" y="-150" dx="-1" dy="15" class="mute today">friday, 24 october</text>
 
     </svg>
 
@@ -139,6 +161,8 @@
       properties: {
         xs:      { value: [ 8, 22, 36, 50, 64, 78, 92]},        
         heights: { value: [10, 30,  0, 83, 99, 60, 50]},
+        minstarty: { value: -80 },
+        maxstarty: { value: -90 },
       },
 
       observers: [
@@ -165,6 +189,9 @@
 
         self.xmax = self.cs[4].x;
         self.ymax = self.cs[4].y;
+
+        self.xtoday = self.cs[6].x;
+        self.ytoday = self.cs[6].y;
       },
       
       c: function(change, index, path) {
