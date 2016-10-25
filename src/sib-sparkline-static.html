@@ -111,6 +111,15 @@
         font-size: 10px;
         font-weight: 300;
       }
+
+      paper-button {
+        position:fixed; 
+        top: 150px; 
+        background: rgba(255,255,255, 0.8); 
+        width: 70vw; 
+        color: var(--primary-color);
+      }
+
     </style>
     <svg id="svg"
       xmlns="http://www.w3.org/2000/svg" version="1.1" 
@@ -140,13 +149,13 @@
       <text x$="[[xmax]]" y$="[[maxstarty]]" dx="1" dy="3">08:40</text>
       <text x$="[[xmax]]" y$="[[maxstarty]]" dx="1" dy="8" class="mute">fri</text>
 
-      <line x1$="[[xtoday]]" x2$="[[xtoday]]" y1$="[[ytoday]]" y2="-160" class="today"></line>
-      <text x$="[[xtoday]]" y="-150" dx="-1" dy="3" class="today">08:40:31</text>
-      <text x$="[[xtoday]]" y="-150" dx="-1" dy="15" class="mute today">friday, 24 october</text>
+      <line x1$="[[xtoday]]" x2$="[[xtoday]]" y1$="[[ytoday]]" y2$="[[todstarty]]" class="today"></line>
+      <text x$="[[xtoday]]" y$="[[todstarty]]" dx="-1" dy="13" class="today">08:40:31</text>
+      <text x$="[[xtoday]]" y$="[[todstarty]]" dx="-1" dy="25" class="mute today">friday, 24 october</text>
 
     </svg>
 
-    <paper-button raised style="position:fixed; top: 150px;">
+    <paper-button raised>
       I'm up!
     </paper-button>
 
@@ -166,8 +175,9 @@
       properties: {
         xs:      { value: [ 8, 22, 36, 50, 64, 78, 92]},        
         heights: { value: [10, 30,  0, 83, 99, 60, 50]},
-        minstarty: { value: -90 },
-        maxstarty: { value: -90 },
+        minstarty: { value: -75 },
+        maxstarty: { value: -80 },
+        todstarty: { value: -130 },
       },
 
       observers: [
@@ -177,18 +187,15 @@
       minindex: 2,
       maxindex: 4,
       b: 20,
-      k: 45,
+      k: 40,
 
       calc: function () {
-        var b = 20;
-        var k = 45;
-
         var self = this;
 
         self.cs = self.heights.map(function (h, i) {
           return {
             x: self.xs[i],
-            y: -b - (k*h/100)
+            y: -self.b - (self.k*h/100)
           }
         });
 
