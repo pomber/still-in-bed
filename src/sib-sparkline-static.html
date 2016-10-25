@@ -103,14 +103,16 @@
         </linearGradient>
       </defs>
       
-<path d="M-5 -22 C1.5 -22 1.5 -22 8 -22 C15 -22 15 -34 22 -34 C29 -34 29 -16 36 -16 C43 -16 43 -65.8 50 -65.8 C57 -65.8 57 -76 64 -76 C71 -76 71 -52 78 -52 C85 -52 85 -46 92 -46 h100 v500 h-500"></path>
-<circle cx="8" cy="-22"></circle>
-<circle cx="22" cy="-34"></circle>
-<circle cx="36" cy="-16"></circle>
-<circle cx="50" cy="-65.8"></circle>
-<circle cx="64" cy="-76"></circle>
-<circle cx="78" cy="-52"></circle>
-<circle cx="92" cy="-46"></circle>
+
+      <path d$="[[path]]"></path>
+
+      <circle cx$="[[c(cs.*, 0, 'x')]]" cy$="[[c(cs.*, 0, 'y')]]"></circle>
+      <circle cx$="[[c(cs.*, 1, 'x')]]" cy$="[[c(cs.*, 1, 'y')]]"></circle>
+      <circle cx$="[[c(cs.*, 2, 'x')]]" cy$="[[c(cs.*, 2, 'y')]]"></circle>      
+      <circle cx$="[[c(cs.*, 3, 'x')]]" cy$="[[c(cs.*, 3, 'y')]]"></circle>
+      <circle cx$="[[c(cs.*, 4, 'x')]]" cy$="[[c(cs.*, 4, 'y')]]"></circle>
+      <circle cx$="[[c(cs.*, 5, 'x')]]" cy$="[[c(cs.*, 5, 'y')]]"></circle>
+      <circle cx$="[[c(cs.*, 6, 'x')]]" cy$="[[c(cs.*, 6, 'y')]]"></circle>
 
       <line x1="36" x2="36" y1="-15" y2="-100"></line>
       <text x="36" y="-100" dx="1" dy="3">07:10</text>
@@ -140,43 +142,35 @@
 
       is: 'sib-sparkline',
 
-      ready: function() {
-        var cs = [
-          { x:  8, y: 10 },
-          { x: 22, y: 30 },
-          { x: 36, y: 0 },
-          { x: 50, y: 83 },
-          { x: 64, y: 100 },
-          { x: 78, y: 60 },
-          { x: 92, y: 50 },
-        ];
+      properties: {
+        xs:      { value: [ 8, 22, 36, 50, 64, 78, 92]},        
+        heights: { value: [10, 30,  0, 83, 99, 60, 50]},
+      },
 
+      observers: [
+        'calc(heights.*)'
+      ],
+
+      calc: function () {
         var b = 16;
         var k = 60;
 
-        cs.forEach(function (c, i) {
-          c.y = -b - (k*c.y/100);
+        var self = this;
+
+        self.cs = self.heights.map(function (h, i) {
+          return {
+            x: self.xs[i],
+            y: -b - (k*h/100)
+          }
         });
 
-        console.groupCollapsed("SVG");
-        var output = "";
-        
-        var d = this.getPath(cs);
-        var p = "<path d=\"" + d + "\"></path>";
-        
-        console.log(p);
-        output += p + "\n";
-
-        cs.forEach(function (c) {
-          var e = "<circle cx=\"" 
-            + c.x + "\" cy=\""+ c.y 
-            + "\"></circle>";
-          console.log(e);
-          output += e + "\n";
-        });   
-
-        console.groupEnd();
-        console.log(output);
+        self.path = self.getPath(self.cs);
+      },
+      
+      c: function(change, index, path) {
+        var v = this.get(path, change.base[index]);
+        if (v || v === 0) return v;
+        return -10;
       },
 
       getPath: function(cs) {
