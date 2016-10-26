@@ -7,13 +7,14 @@
 <dom-module id="sib-today">
   <template>
     <style include="iron-flex iron-flex-alignment">
-      :host {
+      :host {          
       }
 
       .container {
         @apply(--layout-vertical);
         @apply(--layout-center-justified);
         @apply(--layout-center);
+        --background: rgba(255,255,255,0.2);
       }
 
       paper-button {
@@ -29,10 +30,11 @@
       .text.time {
         font-size: 17vw;
         font-weight: 400;
+        opacity: 0.8;
       }
 
       .text.day {
-        font-size: 8vw;
+        font-size: 7.5vw;
         font-weight: 400;
         opacity: 0.6;
       }
