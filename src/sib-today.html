@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/full-width-text/full-width-text.html">
 
 <dom-module id="sib-today">
   <template>
@@ -24,25 +25,27 @@
       }
 
       .text {
-        @apply(--paper-font-common-base);
+        --@apply(--paper-font-common-base);
+        font: san-serif !important;
       }
 
-      .text.time {
-        font-size: 17vw;
+      .text.time { 
+        width: 70vw; 
         font-weight: 400;
         opacity: 0.8;
       }
 
-      .text.day {
-        font-size: 7.5vw;
+      .text.day { 
+        width: 70vw; 
         font-weight: 400;
+        text-transform: uppercase;        
         opacity: 0.6;
       }
     </style>
     
     <div class="container">
-        <div class="text time">08:41:20</div>
-        <div class="text day">Tuesday 25, October</div>
+        <full-width-text class="text time">08:41:20</full-width-text>
+        <full-width-text class="text day">Wednesday 25, October</full-width-text>
         <paper-button raised>
             I'm up!
         </paper-button>
